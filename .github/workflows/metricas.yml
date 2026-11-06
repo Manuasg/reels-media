@@ -1,0 +1,29 @@
+name: Guardar métricas de los reels
+on:
+  schedule:
+    - cron: '17 */6 * * *'       # cada 6 h: así hay una foto cerca de las 48 h de cada reel
+  workflow_dispatch:
+concurrency:
+  group: escribe-repo
+  cancel-in-progress: false
+permissions:
+  contents: write
+  issues: write
+jobs:
+  metricas:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      IG_TOKEN: ${{ secrets.IG_TOKEN }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Leer métricas
+        run: |
+          if [ -z "$IG_TOKEN" ]; then echo "Sin IG_TOKEN todavía."; exit 0; fi
+          python publicador/metricas.py
+      - name: Subir cambios
+        run: publicador/subir_cambios.sh "Métricas - $(date -u +'%F %H:%M') UTC"
+      - name: Avisar
+        if: always()
+        run: publicador/avisar.sh

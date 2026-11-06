@@ -1,0 +1,31 @@
+name: Renovar la clave de Instagram
+on:
+  schedule:
+    - cron: '23 3 1,15 * *'      # días 1 y 15: la clave dura 60 días, sobra margen
+  workflow_dispatch:
+permissions:
+  issues: write
+jobs:
+  renovar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Renovar
+        env:
+          IG_TOKEN: ${{ secrets.IG_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_PAT }}    # token con permiso para escribir secretos
+        run: |
+          if [ -z "$IG_TOKEN" ] || [ -z "$GH_TOKEN" ]; then
+            echo "- Faltan los secretos IG_TOKEN o GH_PAT: no se ha renovado la clave." > avisos.md; exit 0
+          fi
+          python publicador/renovar_token.py
+      - name: Avisar
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ "${{ job.status }}" = "failure" ]; then
+            echo "- **No se ha podido renovar la clave de Instagram.** Si no se arregla antes de 60 días desde la última renovación, se deja de publicar." > avisos.md
+          fi
+          publicador/avisar.sh
