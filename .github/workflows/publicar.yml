@@ -1,0 +1,45 @@
+name: Publicar reels de la cola
+on:
+  schedule:
+    - cron: '*/15 * * * *'      # cada 15 min (GitHub puede retrasarse 5-20 min)
+  push:
+    branches: [main]
+    paths: ['cola/**']           # al subir fichas: se revisan y se publica lo que ya toque
+  workflow_dispatch:
+concurrency:
+  group: escribe-repo
+  cancel-in-progress: false
+permissions:
+  contents: write
+  issues: write
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      IG_TOKEN: ${{ secrets.IG_TOKEN }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: ¿Hay algo en la cola?
+        id: cola
+        run: |
+          if ls cola/*.json >/dev/null 2>&1; then echo "hay=1" >> "$GITHUB_OUTPUT"; else echo "Cola vacía."; fi
+      - name: Publicar lo que toca
+        if: steps.cola.outputs.hay == '1'
+        run: |
+          if [ -z "$IG_TOKEN" ]; then
+            echo "- Falta el secreto IG_TOKEN: no se ha publicado nada." > avisos.md
+          else
+            python publicador/publicar.py
+          fi
+      - name: Subir cambios
+        if: always() && steps.cola.outputs.hay == '1'
+        run: publicador/subir_cambios.sh "Publicador - cola actualizada"
+      - name: Avisar
+        if: always()
+        run: |
+          if [ "${{ job.status }}" = "failure" ] && [ ! -s avisos.md ]; then
+            echo "- El workflow ha fallado sin dejar aviso: mira el registro de la ejecución." > avisos.md
+          fi
+          publicador/avisar.sh
