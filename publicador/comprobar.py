@@ -11,11 +11,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 import ig  # noqa: E402
 
-yo = ig.llamar("GET", "me", fields="user_id,username,account_type,followers_count,media_count")
-print(f"Cuenta: @{yo.get('username')}  tipo: {yo.get('account_type')}  seguidores: {yo.get('followers_count')}  "
-      f"publicaciones: {yo.get('media_count')}")
-if str(yo.get("user_id")) != ig.user_id():
-    print(f"Ojo: IG_USER_ID ({ig.user_id()}) no coincide con el user_id de la clave ({yo.get('user_id')}).")
+yo = ig.llamar("GET", ig.user_id(), fields="username,followers_count,media_count")
+print(f"Cuenta: @{yo.get('username')}  seguidores: {yo.get('followers_count')}  publicaciones: {yo.get('media_count')}")
 if (yo.get("followers_count") or 0) < 1000:
     print("Ojo: los reels de prueba piden al menos 1.000 seguidores.")
 usado, total = ig.cupo()

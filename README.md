@@ -29,7 +29,6 @@ Si algo falla, el workflow sale en rojo en **Actions** y GitHub avisa por correo
 ## Workflows
 - **Publicar reels en cola**: cada 15 min.
 - **Guardar métricas de los reels**: cada día.
-- **Renovar clave de Instagram**: días 1 y 15.
 - **Comprobar conexión con Instagram (no publica)**: manual.
 
-Configuración inicial: [GUIA_CONFIGURACION.md](GUIA_CONFIGURACION.md). Claves en los Secrets del repo: `IG_TOKEN`, `IG_USER_ID`, `GH_PAT`.
+Configuración inicial: [GUIA_CONFIGURACION.md](GUIA_CONFIGURACION.md). Claves en los Secrets del repo: `IG_TOKEN` (usuario de sistema del portfolio, no caduca) e `IG_USER_ID`.

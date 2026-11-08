@@ -1,5 +1,7 @@
-"""Llamadas mínimas a la API de Instagram (Instagram API with Instagram Login). Solo biblioteca estándar.
+"""Llamadas mínimas a la API de Instagram (Graph API vía portfolio comercial de Meta). Solo biblioteca estándar.
 
+Las apps nuevas de Meta ya no permiten «Instagram login»: la cuenta de Instagram está en el portfolio
+«Profe de mates en n pasos» y la clave es de un usuario de sistema (no caduca).
 Necesita las variables de entorno IG_TOKEN e IG_USER_ID (en GitHub Actions vienen de los Secrets del repo).
 """
 import json
@@ -9,7 +11,7 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
-API = "https://graph.instagram.com/v23.0"
+API = "https://graph.facebook.com/v23.0"
 REPO_RAW = "https://raw.githubusercontent.com/Manuasg/reels-media/main/"
 
 
