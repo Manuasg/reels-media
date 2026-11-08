@@ -1,0 +1,9 @@
+{
+  "publicar_a": "2026-11-10T10:00:00+01:00",
+  "video": "i3_exponencial_C.mp4",
+  "portada": "portada_i3_exponencial.png",
+  "texto": "f(x) = 1 + ∫₀ˣ f(t) dt. No hay derivadas en la ecuación, y se resuelve derivando.\n\n1. Derivo los dos lados. Por el teorema fundamental del cálculo, la derivada de ∫₀ˣ f(t) dt es f(x). Queda f'(x) = f(x).\n\n2. Falta una condición: con x = 0 la integral vale 0, así que f(0) = 1.\n\n3. f' = f con f(0) = 1 tiene una única solución: f(x) = eˣ.\n\n4. Comprobación: ∫₀ˣ eᵗ dt = eˣ − 1. Le sumas 1 y recuperas eˣ.\n\nReto: resuelve f(x) = 2 + ∫₀ˣ f(t) dt.\n\n#integrales #matematicas #teoremafundamental #oposicionesmatematicas #profedematematicas",
+  "prueba": true,
+  "reel": "i3_exponencial",
+  "version": "C"
+}
