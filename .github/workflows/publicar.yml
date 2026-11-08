@@ -1,0 +1,44 @@
+name: Publicar reels en cola
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"   # cada 15 min (GitHub puede retrasarlo 5-20 min)
+  workflow_dispatch: {}
+
+concurrency:
+  group: publicar      # nunca dos a la vez: evita publicar algo dos veces
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: ¿Hay algo en cola?
+        id: cola
+        run: |
+          if ls cola/*.json >/dev/null 2>&1; then echo "hay=1" >> "$GITHUB_OUTPUT"; else echo "Cola vacía"; fi
+      - uses: actions/setup-python@v5
+        if: steps.cola.outputs.hay == '1'
+        with:
+          python-version: "3.12"
+      - name: Publicar lo que toca
+        if: steps.cola.outputs.hay == '1'
+        env:
+          IG_TOKEN: ${{ secrets.IG_TOKEN }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+        run: python publicador/publicar.py
+      - name: Guardar cambios de la cola
+        if: always() && steps.cola.outputs.hay == '1'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A cola publicado errores 2>/dev/null || true
+          if ! git diff --cached --quiet; then
+            git commit -m "Publicado desde la cola"
+            git pull --rebase -q && git push -q
+          fi

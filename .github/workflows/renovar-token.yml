@@ -1,0 +1,25 @@
+name: Renovar clave de Instagram
+
+on:
+  schedule:
+    - cron: "0 5 1,15 * *"   # días 1 y 15: la clave dura 60 días, así hay margen de sobra
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  renovar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Renovar y guardar
+        env:
+          IG_TOKEN: ${{ secrets.IG_TOKEN }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        run: python publicador/renovar_token.py

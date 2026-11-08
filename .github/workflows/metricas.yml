@@ -1,0 +1,44 @@
+name: Guardar métricas de los reels
+
+on:
+  schedule:
+    - cron: "30 6 * * *"     # cada día hacia las 7:30-8:30 en Madrid
+  workflow_dispatch: {}
+
+concurrency:
+  group: publicar      # comparte turno con el publicador para no chocar al hacer push
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  metricas:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: ¿Hay reels publicados?
+        id: hay
+        run: |
+          if ls publicado/*.json >/dev/null 2>&1; then echo "si=1" >> "$GITHUB_OUTPUT"; else echo "Nada publicado todavía"; fi
+      - uses: actions/setup-python@v5
+        if: steps.hay.outputs.si == '1'
+        with:
+          python-version: "3.12"
+      - name: Leer métricas
+        if: steps.hay.outputs.si == '1'
+        env:
+          IG_TOKEN: ${{ secrets.IG_TOKEN }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+        run: python publicador/metricas.py
+      - name: Guardar
+        if: steps.hay.outputs.si == '1'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A metricas 2>/dev/null || true
+          if ! git diff --cached --quiet; then
+            git commit -m "Métricas del día"
+            git pull --rebase -q && git push -q
+          fi

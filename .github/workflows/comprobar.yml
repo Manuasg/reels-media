@@ -1,0 +1,29 @@
+name: Comprobar conexión con Instagram (no publica)
+
+on:
+  workflow_dispatch:
+    inputs:
+      video:
+        description: "Opcional: URL pública de un vídeo para probar un contenedor de reel de prueba (no se publica)"
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+
+jobs:
+  comprobar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Comprobar
+        env:
+          IG_TOKEN: ${{ secrets.IG_TOKEN }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          VIDEO: ${{ inputs.video }}
+        run: |
+          if [ -n "$VIDEO" ]; then python publicador/comprobar.py --contenedor "$VIDEO"; else python publicador/comprobar.py; fi
