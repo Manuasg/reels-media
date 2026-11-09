@@ -9,14 +9,20 @@ Cada publicación es una ficha cola/<nombre>.json:
       "prueba": true,                              # reel de prueba (solo no seguidores)
       "reel": "rendimientos", "version": "A"       # para el registro y el veredicto
     }
+Antes de llamar a Instagram la ficha pasa a publicando/ y ese cambio se sube a GitHub: si la subida
+falla, no se publica. Así, pase lo que pase después, la ficha ya no está en cola/ y nunca sale dos veces.
 Tras publicar: la ficha pasa a publicado/ con el id y el enlace, y el vídeo se borra de cola/
 (la portada se borra cuando ya no la usa ninguna otra ficha).
+Si algo falla con la ficha en publicando/, se queda ahí y el workflow falla (aviso por correo):
+hay que mirar en Instagram si salió y, si no, devolverla a cola/ a mano.
 
     python publicador/publicar.py            # publica lo que toca
     python publicador/publicar.py --listar   # solo muestra la cola
 """
 import json
+import subprocess
 import sys
+import time
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -25,6 +31,7 @@ import ig  # noqa: E402
 
 RAIZ = Path(__file__).resolve().parent.parent
 COLA, PUBLICADO, ERRORES = RAIZ / "cola", RAIZ / "publicado", RAIZ / "errores"
+PUBLICANDO = RAIZ / "publicando"
 RETRASO_MAX = timedelta(hours=6)    # si GitHub se retrasa más que esto, no se publica a deshora
 
 
@@ -43,15 +50,37 @@ def cargar():
 def mover(f, destino, extra):
     destino.mkdir(exist_ok=True)
     datos = {k: v for k, v in f.items() if not k.startswith("_")} | extra
-    (destino / f["_ruta"].name).write_text(json.dumps(datos, ensure_ascii=False, indent=2), encoding="utf-8")
-    f["_ruta"].unlink()
+    nueva = destino / f["_ruta"].name
+    nueva.write_text(json.dumps(datos, ensure_ascii=False, indent=2), encoding="utf-8")
+    if f["_ruta"] != nueva:
+        f["_ruta"].unlink()
+    f["_ruta"] = nueva
+
+
+def git(*args):
+    return subprocess.run(["git", *args], cwd=RAIZ, capture_output=True, text=True)
+
+
+def bloquear(f):
+    """Pasa la ficha a publicando/ y lo sube a GitHub. Devuelve False si no se pudo subir."""
+    mover(f, PUBLICANDO, {"inicio": datetime.now(timezone.utc).isoformat()})
+    git("config", "user.name", "github-actions[bot]")
+    git("config", "user.email", "41898282+github-actions[bot]@users.noreply.github.com")
+    git("add", "-A", "cola", "publicando")
+    if git("commit", "-q", "-m", f"Publicando {f['_ruta'].name}").returncode != 0:
+        return False
+    for _ in range(3):
+        if git("pull", "--rebase", "-q").returncode == 0 and git("push", "-q").returncode == 0:
+            return True
+        time.sleep(5)
+    return False
 
 
 def limpiar_archivos(f):
     (COLA / f["video"]).unlink(missing_ok=True)
     portada = f.get("portada")
     if portada and not any(json.loads(p.read_text(encoding="utf-8")).get("portada") == portada
-                           for p in COLA.glob("*.json")):
+                           for p in [*COLA.glob("*.json"), *PUBLICANDO.glob("*.json")]):
         (COLA / portada).unlink(missing_ok=True)
 
 
@@ -75,6 +104,10 @@ def main():
         if not (COLA / f["video"]).exists():
             print(f"✗ {nombre}: no encuentro cola/{f['video']}")
             mover(f, ERRORES, {"error": f"falta cola/{f['video']}"}); fallos += 1; continue
+        if not bloquear(f):
+            print(f"✗ {nombre}: no pude subir el bloqueo a GitHub; no publico para no arriesgar un duplicado")
+            sys.exit(1)
+        publicado_ya = False   # a partir de media_publish no se sabe si salió: nunca se reintenta
         try:
             video_url = ig.REPO_RAW + "cola/" + f["video"]
             portada_url = ig.REPO_RAW + "cola/" + f["portada"] if f.get("portada") else None
@@ -82,6 +115,7 @@ def main():
             estado, detalle = ig.esperar_contenedor(cid)
             if estado != "FINISHED":
                 raise ig.ErrorIG(f"Instagram no pudo procesar el vídeo: {estado} {detalle}")
+            publicado_ya = True
             mid = ig.publicar_contenedor(cid)
             try:
                 info = ig.info_media(mid)
@@ -92,10 +126,16 @@ def main():
             mover(f, PUBLICADO, {"media_id": mid, "permalink": info.get("permalink"),
                                  "publicado": info.get("timestamp"), "tipo": info.get("media_product_type")})
             limpiar_archivos(f)
-        except ig.ErrorIG as e:
-            print(f"✗ {nombre}: {e}")
-            # se queda en cola para reintentar en la próxima vuelta, salvo que ya vaya muy tarde
+        except Exception as e:
             fallos += 1
+            if publicado_ya:
+                # puede haber salido: se queda en publicando/ para que Manuel lo mire
+                print(f"✗ {nombre}: fallo al publicar, quizá salió: mira Instagram. Ficha en publicando/. {e}")
+                mover(f, PUBLICANDO, {"error": str(e)})
+            else:
+                # Instagram no llegó a publicar: vuelve a cola/ y se reintenta en la próxima vuelta
+                print(f"✗ {nombre}: {e} (vuelve a la cola)")
+                mover(f, COLA, {})
     if fallos:
         sys.exit(1)   # el workflow falla y GitHub avisa por correo
 

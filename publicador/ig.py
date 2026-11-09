@@ -34,14 +34,15 @@ def user_id():
 
 
 def llamar(metodo, ruta, base=API, **params):
-    params["access_token"] = _token()
+    # El token va en la cabecera Authorization, nunca en la URL (las URL acaban en registros).
+    cabeceras = {"Authorization": f"Bearer {_token()}"}
     datos = urllib.parse.urlencode({k: (json.dumps(v) if isinstance(v, (dict, list)) else v)
                                     for k, v in params.items() if v is not None})
     url = f"{base}/{ruta.lstrip('/')}"
     if metodo == "GET":
-        req = urllib.request.Request(f"{url}?{datos}")
+        req = urllib.request.Request(f"{url}?{datos}", headers=cabeceras)
     else:
-        req = urllib.request.Request(url, data=datos.encode(), method=metodo)
+        req = urllib.request.Request(url, data=datos.encode(), method=metodo, headers=cabeceras)
     for intento in range(3):
         try:
             with urllib.request.urlopen(req, timeout=60) as r:
@@ -50,7 +51,6 @@ def llamar(metodo, ruta, base=API, **params):
             cuerpo = e.read().decode(errors="replace")
             if e.code >= 500 and intento < 2:
                 time.sleep(5 * (intento + 1)); continue
-            # nunca imprimir la URL: lleva el token
             raise ErrorIG(f"{metodo} {ruta} -> HTTP {e.code}: {cuerpo}") from None
         except urllib.error.URLError as e:
             if intento < 2:
