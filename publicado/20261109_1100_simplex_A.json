@@ -5,5 +5,9 @@
   "texto": "El simplex no ve el dibujo: solo resuelve sistemas. Un vértice, para el álgebra, es una solución básica.\n\nProblema: máx Z = 3x + 5y con x ≤ 4, 2y ≤ 12, 3x + 2y ≤ 18, x, y ≥ 0.\n\n1. Holguras: x + h₁ = 4, 2y + h₂ = 12, 3x + 2y + h₃ = 18. Tres ecuaciones, cinco incógnitas.\n\n2. Solución básica: dos variables a 0 y se resuelven las otras tres. C(5,2) = 10 formas; 8 dan sistema compatible determinado; 5 son factibles: los 5 vértices (0,0), (4,0), (4,3), (2,6), (0,6).\n\n3. Regla: entra la variable con el coeficiente más negativo en la fila de Z; sale la del menor cociente.\n\n4. Entra y (sale h₂): vértice (0,6), Z = 30. Entra x (sale h₃): vértice (2,6), Z = 36. Sin negativos en la fila de Z: óptimo.\n\n5. Precios sombra en la fila final: 0; 1,5; 1. La primera restricción sobra (x = 2 < 4), por eso vale 0.\n\nReto: comprueba que 4·0 + 12·1,5 + 18·1 = 36. ¿Por qué coincide con Z?\n\n#programacionlineal #matematicas #investigacionoperativa #oposicionesmatematicas #profedematematicas",
   "prueba": true,
   "reel": "simplex",
-  "version": "A"
+  "version": "A",
+  "media_id": "18117551693518679",
+  "permalink": "https://www.instagram.com/reel/DfhF5-gHAyd/",
+  "publicado": "2026-11-09T10:15:13+0000",
+  "tipo": "REELS"
 }
