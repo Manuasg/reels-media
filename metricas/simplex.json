@@ -1,0 +1,42 @@
+{
+  "A": {
+    "media_id": "18117551693518679",
+    "permalink": "https://www.instagram.com/reel/DfhF5-gHAyd/",
+    "publicado": "2026-11-09T10:15:13+0000",
+    "fotos": [
+      {
+        "hora": "2026-11-09T16:44+00:00",
+        "views": 333,
+        "reach": 294,
+        "saved": 1,
+        "shares": 0,
+        "likes": 8,
+        "comments": 0,
+        "total_interactions": 9,
+        "ig_reels_avg_watch_time": 8221,
+        "ig_reels_video_view_total_time": 2392469,
+        "reels_skip_rate": 65
+      }
+    ]
+  },
+  "B": {
+    "media_id": "18147576565573085",
+    "permalink": "https://www.instagram.com/reel/DfhNt5glYw9/",
+    "publicado": "2026-11-09T11:23:32+0000",
+    "fotos": [
+      {
+        "hora": "2026-11-09T16:44+00:00",
+        "views": 37,
+        "reach": 32,
+        "saved": 0,
+        "shares": 0,
+        "likes": 0,
+        "comments": 0,
+        "total_interactions": 0,
+        "ig_reels_avg_watch_time": 8190,
+        "ig_reels_video_view_total_time": 262105,
+        "reels_skip_rate": 63.6
+      }
+    ]
+  }
+}
