@@ -2,7 +2,7 @@ name: Publicar reels en cola
 
 on:
   schedule:
-    - cron: "*/15 * * * *"   # cada 15 min (GitHub puede retrasarlo 5-20 min)
+    - cron: "7,22,37,52 * * * *"   # cada 15 min, lejos de :00/:15/:30/:45 (las horas punta en que GitHub descarta ejecuciones)
   workflow_dispatch: {}
 
 concurrency:
