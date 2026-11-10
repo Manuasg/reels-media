@@ -1,8 +1,8 @@
 {
   "publicar_a": "2026-11-11T11:00:00+01:00",
   "video": "i5_funcion_signo_A.mp4",
-  "portada": "portada_i5_funcion_signo.png",
-  "texto": "Integras una función con un salto y sale una función con un pico.\n\n1. sgn(t) vale −1 si t < 0, 0 en t = 0 y 1 si t > 0. Tiene un salto en 0.\n\n2. F(x) = ∫₋₁ˣ sgn(t) dt.\nSi x < 0: ∫₋₁ˣ (−1) dt = −x − 1.\nSi x > 0: de −1 a 0 aporta −1 y de 0 a x aporta x. En total, x − 1.\n\n3. En los dos casos, F(x) = |x| − 1: un pico en 0.\n\n4. F es continua, pero no derivable en 0: pendiente −1 por la izquierda y 1 por la derecha.\n\n5. El teorema fundamental da F'(x) = f(x) solo donde f es continua. En el salto, falla.\n\nReto: integra de 0 a x la función que vale 0 si t < 1 y 1 si t ≥ 1. ¿Dónde no es derivable?\n\n#integrales #matematicas #teoremafundamental #oposicionesmatematicas #profedematematicas",
+  "portada": "portada_i5_funcion_signo_A.png",
+  "texto": "Integras un salto y sale un pico. Mira por qué pasa.\n\n1. sgn(t) vale −1 si t < 0, 0 en t = 0 y 1 si t > 0. Tiene un salto en 0.\n\n2. F(x) = ∫₋₁ˣ sgn(t) dt.\nSi x < 0: ∫₋₁ˣ (−1) dt = −x − 1.\nSi x > 0: de −1 a 0 aporta −1 y de 0 a x aporta x. En total, x − 1.\n\n3. En los dos casos, F(x) = |x| − 1: un pico en 0.\n\n4. F es continua, pero no derivable en 0: pendiente −1 por la izquierda y 1 por la derecha.\n\n5. El teorema fundamental da F'(x) = f(x) solo donde f es continua. En el salto, falla.\n\nReto: integra de 0 a x la función que vale 0 si t < 1 y 1 si t ≥ 1. ¿Dónde no es derivable?\n\n#calculointegral #mates #matematicasbachillerato #oposicionesdocentes #profedemates",
   "prueba": true,
   "reel": "i5_funcion_signo",
   "version": "A"

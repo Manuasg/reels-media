@@ -1,8 +1,8 @@
 {
   "publicar_a": "2026-11-12T11:00:00+01:00",
   "video": "i6_leibniz_x2_A.mp4",
-  "portada": "portada_i6_leibniz_x2.png",
-  "texto": "F(x) = ∫₀^(x²) e^(−t²) dt. Sin primitiva elemental, pero se deriva en un minuto.\n\n1. e^(−t²) no tiene primitiva elemental: no puedo calcular la integral.\n\n2. Teorema fundamental: la derivada de ∫₀ᵘ g(t) dt respecto a u es g(u).\n\n3. Aquí el límite es u = x², no x. Entra la regla de la cadena: F'(x) = g(x²)·(x²)'.\n\n4. F'(x) = e^(−x⁴)·2x.\n\nError típico: olvidar el 2x.\n\nReto: deriva ∫ₓ^(x²) 1/(1 + t²) dt. Ojo: los dos límites dependen de x.\n\n#integrales #matematicas #calculo #oposicionesmatematicas #profedematematicas",
+  "portada": "portada_i6_leibniz_x2_A.png",
+  "texto": "Sin primitiva elemental y aun así se deriva en un minuto: regla de Leibniz con límite x².\n\n1. e^(−t²) no tiene primitiva elemental: no puedo calcular la integral.\n\n2. Teorema fundamental: la derivada de ∫₀ᵘ g(t) dt respecto a u es g(u).\n\n3. Aquí el límite es u = x², no x. Entra la regla de la cadena: F'(x) = g(x²)·(x²)'.\n\n4. F'(x) = e^(−x⁴)·2x.\n\nError típico: olvidar el 2x.\n\nReto: deriva ∫ₓ^(x²) 1/(1 + t²) dt. Ojo: los dos límites dependen de x.\n\n#regladeleibniz #calculointegral #matematicas #oposicionesdocentes #profedemates",
   "prueba": true,
   "reel": "i6_leibniz_x2",
   "version": "A"
