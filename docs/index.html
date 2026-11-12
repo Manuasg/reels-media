@@ -85,6 +85,7 @@ tr.win td{background:var(--jade-bg)}
 ul.pend{list-style:none;margin:0;padding:0}
 ul.pend li{padding:5px 0;border-bottom:1px solid var(--line);font-size:14px}
 .muted{color:var(--sub);font-size:12.5px}
+summary{cursor:pointer;margin-top:8px}
 .stat.ok{border-color:var(--jade)}
 </style>
 </head>
@@ -323,7 +324,7 @@ ul.pend li{padding:5px 0;border-bottom:1px solid var(--line);font-size:14px}
     const fotos = m && Object.values(m)[0]?.fotos;
     if (fotos?.length) box.append(el("div", "muted", `Métricas del ${new Date(fotos.at(-1).hora).toLocaleString("es-ES", { timeZone: TZ, dateStyle: "medium", timeStyle: "short" })} (${fotos.length} foto(s) guardadas).`));
     const distinct = [...new Map(vers.map(v => [v.texto, v])).values()];
-    distinct.forEach(v => { box.append(el("div", "muted", distinct.length > 1 ? `Descripción de ${v.version}` : "Descripción")); box.append(el("pre", null, v.texto || "")); });
+    distinct.forEach((v, i) => { const d = el("details"); d.open = i === 0; d.append(el("summary", "muted", distinct.length > 1 ? `Descripción de ${v.version}` : "Descripción"), el("pre", null, v.texto || "")); box.append(d); });
   }
 
   async function refresh(full) {
