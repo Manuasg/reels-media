@@ -5,5 +5,6 @@
   "texto": "¿Cuánto vale la derivada de ∫₀^(x²) e^(−t²) dt? No hace falta calcular la integral.\n\n1. e^(−t²) no tiene primitiva elemental: no puedo calcular la integral.\n\n2. Teorema fundamental: la derivada de ∫₀ᵘ g(t) dt respecto a u es g(u).\n\n3. Aquí el límite es u = x², no x. Entra la regla de la cadena: F'(x) = g(x²)·(x²)'.\n\n4. F'(x) = e^(−x⁴)·2x.\n\nError típico: olvidar el 2x.\n\nReto: deriva ∫ₓ^(x²) 1/(1 + t²) dt. Ojo: los dos límites dependen de x.\n\n#derivadas #integrales #mates #matematicasbachillerato #aprendematematicas",
   "prueba": true,
   "reel": "i6_leibniz_x2",
-  "version": "B"
+  "version": "B",
+  "inicio": "2026-11-12T11:02:13.222875+00:00"
 }
