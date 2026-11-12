@@ -38,11 +38,6 @@ def main():
         if r and r.get("data"):
             fila[m] = r["data"][0].get("total_value", {}).get("value")
 
-    r = pedir("follows_and_unfollows", f"{uid}/insights", metric="follows_and_unfollows", period="day",
-              metric_type="total_value", breakdown="follow_type")
-    if r and r.get("data"):
-        fila["follows_and_unfollows"] = r["data"][0].get("total_value")
-
     demo = {}
     for b in ["age", "gender", "country", "city"]:
         r = pedir(f"demografia_{b}", f"{uid}/insights", metric="follower_demographics", period="lifetime",
@@ -56,13 +51,18 @@ def main():
     if demo:
         todo["demografia"] = {"hora": fila["hora"], **demo}
 
-    r = pedir("online_followers", f"{uid}/insights", metric="online_followers", period="lifetime")
-    if r and r.get("data"):
-        vals = [v for v in r["data"][0].get("values", []) if v.get("value")]
-        if vals:
-            todo["online"] = {"hora": fila["hora"], "valores": vals}
-        else:
-            errores["online_followers"] = "respuesta sin valores: " + json.dumps(r)[:200]
+    # Instagram da este dato con unos días de retraso: se piden los últimos 30 días por tramos y se queda con los que traen valores.
+    vals, t1 = {}, int(ahora.timestamp())
+    for i in range(0, 30, 10):
+        r = pedir("online_followers", f"{uid}/insights", metric="online_followers", period="lifetime",
+                  since=t1 - (i + 10) * 86400, until=t1 - i * 86400)
+        for v in ((r or {}).get("data") or [{}])[0].get("values", []):
+            if v.get("value"):
+                vals[v["end_time"]] = v["value"]
+    if vals:
+        todo["online"] = {"hora": fila["hora"], "valores": [{"end_time": k, "value": vals[k]} for k in sorted(vals)]}
+    elif "online_followers" not in errores:
+        errores["online_followers"] = "Instagram no devolvió valores en los últimos 30 días"
 
     hist = [h for h in todo.get("historial", []) if h.get("fecha") != fila["fecha"]]
     todo["historial"] = (hist + [fila])[-400:]
