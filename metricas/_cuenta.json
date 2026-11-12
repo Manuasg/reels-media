@@ -1,0 +1,139 @@
+{
+ "demografia": {
+  "hora": "2026-11-12T11:32+00:00",
+  "age": {
+   "13-17": 9,
+   "18-24": 299,
+   "25-34": 970,
+   "35-44": 803,
+   "45-54": 447,
+   "55-64": 170,
+   "65+": 70
+  },
+  "gender": {
+   "F": 263,
+   "M": 1965,
+   "U": 540
+  },
+  "country": {
+   "DE": 14,
+   "PR": 9,
+   "RU": 1,
+   "BE": 3,
+   "PT": 4,
+   "JP": 1,
+   "HN": 9,
+   "PY": 26,
+   "DO": 17,
+   "FR": 20,
+   "BO": 12,
+   "SA": 1,
+   "BR": 37,
+   "SE": 5,
+   "MA": 2,
+   "ID": 1,
+   "GB": 6,
+   "IE": 2,
+   "CA": 6,
+   "US": 35,
+   "EC": 61,
+   "SV": 6,
+   "UY": 32,
+   "IN": 2,
+   "CH": 3,
+   "IR": 2,
+   "CL": 414,
+   "CN": 1,
+   "IT": 16,
+   "MX": 529,
+   "CO": 240,
+   "GT": 13,
+   "ES": 623,
+   "CR": 22,
+   "VE": 98,
+   "PA": 15,
+   "AR": 334,
+   "CU": 3,
+   "PE": 128,
+   "TJ": 1,
+   "CZ": 2,
+   "TN": 2,
+   "NI": 1,
+   "PL": 1,
+   "TR": 1
+  },
+  "city": {
+   "Chillán, Bío Bío Region": 9,
+   "Bucaramanga, Santander": 12,
+   "Santiago de Cali, Valle del Cauca": 15,
+   "Zaragoza, Aragón": 12,
+   "Caracas, Capital District": 39,
+   "Pamplona, Navarra": 7,
+   "Guayaquil, Guayas Province": 13,
+   "Barcelona, Cataluña": 28,
+   "Quito, Pichincha Province": 25,
+   "Nezahualcóyotl, State of Mexico": 7,
+   "Lorca, Region of Murcia": 14,
+   "La Serena, Coquimbo Region": 15,
+   "Puebla, Puebla": 18,
+   "Zapopan, Jalisco": 10,
+   "Montevideo, Montevideo Department": 21,
+   "Eva Perón, Buenos Aires": 7,
+   "Bogotá, Distrito Especial": 86,
+   "Aguascalientes, Aguascalientes": 6,
+   "Buenos Aires, Ciudad Autónoma de Buenos Aires": 60,
+   "Morelia, Michoacán de Ocampo": 6,
+   "Córdoba, Córdoba": 19,
+   "Gijón, Principality of Asturias": 10,
+   "Asunción, Asunción": 6,
+   "Panama City, Panamá Province": 9,
+   "Valladolid, Castilla y Leon": 9,
+   "Seville, Andalusia": 19,
+   "Tuxtla Gutiérrez, Chiapas": 6,
+   "Madrid, Comunidad de Madrid": 69,
+   "Valencia, Comunidad Valenciana": 16,
+   "Monterrey, Nuevo León": 9,
+   "Lima, Lima Region": 81,
+   "Almería, Andalusia": 6,
+   "Querétaro, Querétaro Arteaga": 13,
+   "Málaga, Andalusia": 11,
+   "Mexico City, Distrito Federal": 198,
+   "León, Guanajuato": 7,
+   "Guatemala City, Guatemala Department": 7,
+   "Santiago, Santiago Metropolitan Region": 263,
+   "San Luis Potosí, San Luis Potosi": 7,
+   "Guadalajara, Jalisco": 16,
+   "Medellín, Antioquia": 27,
+   "Rosario, Santa Fe": 9,
+   "Murcia, Region of Murcia": 10,
+   "La Plata, Buenos Aires": 13,
+   "Concepción, Bío Bío Region": 13
+  }
+ },
+ "historial": [
+  {
+   "fecha": "2026-11-12",
+   "hora": "2026-11-12T11:32+00:00",
+   "seguidores": 2804,
+   "seguidos": 339,
+   "publicaciones": 96,
+   "reach": 6910,
+   "views": 8910,
+   "profile_views": 34,
+   "accounts_engaged": 349,
+   "total_interactions": 440,
+   "follows_and_unfollows": {
+    "breakdowns": [
+     {
+      "dimension_keys": [
+       "follow_type"
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "errores": {
+  "online_followers": "respuesta sin valores: {\"data\": [{\"id\": \"17841449699063169/insights/online_followers/lifetime\", \"name\": \"online_followers\", \"period\": \"lifetime\", \"values\": [{\"value\": {}, \"end_time\": \"2026-11-11T08:00:00+0000\"}, {\"value\": {"
+ }
+}
