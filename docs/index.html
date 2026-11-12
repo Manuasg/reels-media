@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Planificación de reels</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F2EBDD; --card:#FBF7EF; --ink:#121721; --sub:#5B6270; --line:#E2D9C6;
+  --jade:#3E8F7C; --jade-bg:#DCEEE8; --amber:#B57614; --amber-bg:#FBEACB;
+  --violet:#6B58B5; --violet-bg:#E7E2F7; --red:#B3372F; --red-bg:#F6DCD8;
+  --today:#121721;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#121721; --card:#1B2130; --ink:#F2EBDD; --sub:#A8ADB8; --line:#2B3243;
+    --jade:#76B7A7; --jade-bg:#1F3A35; --amber:#EFB153; --amber-bg:#3D3020;
+    --violet:#A493D8; --violet-bg:#2C2843; --red:#E58A81; --red-bg:#43262A;
+    --today:#EFB153;
+  }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.4 Barlow,system-ui,sans-serif}
+.wrap{max-width:1280px;margin:0 auto;padding:20px 16px 48px}
+header{display:flex;flex-wrap:wrap;align-items:flex-end;gap:12px 20px;justify-content:space-between;margin-bottom:16px}
+h1{font:700 30px/1 "Barlow Condensed",sans-serif;margin:0;letter-spacing:.2px}
+.sub{color:var(--sub);font-size:13px}
+.nav{display:flex;gap:6px;align-items:center}
+button{font:600 14px Barlow,sans-serif;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:7px 12px;cursor:pointer}
+button:hover{border-color:var(--sub)}
+.week{font:600 16px "Barlow Condensed",sans-serif;min-width:170px;text-align:center}
+.stats{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 12px;min-width:120px}
+.stat b{display:block;font:700 22px "Barlow Condensed",sans-serif}
+.stat span{color:var(--sub);font-size:12px}
+.stat.warn{border-color:var(--amber);background:var(--amber-bg)}
+.grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px}
+@media (max-width:1000px){.grid{grid-template-columns:1fr}}
+.day{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px;min-height:120px;display:flex;flex-direction:column;gap:8px}
+.day.today{border:2px solid var(--today)}
+.day.empty{background:transparent;border-style:dashed}
+.dh{display:flex;justify-content:space-between;align-items:baseline}
+.dh b{font:700 17px "Barlow Condensed",sans-serif;text-transform:capitalize}
+.dh span{font-size:12px;color:var(--sub)}
+.code{display:inline-block;font:700 12px "Barlow Condensed",sans-serif;letter-spacing:.5px;background:var(--ink);color:var(--card);border-radius:4px;padding:1px 6px;margin-right:6px}
+.reel{font-weight:600;line-height:1.25}
+.desc{font-size:12.5px;color:var(--sub);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.cover{width:100%;aspect-ratio:4/5;max-height:240px;object-fit:cover;object-position:top;border-radius:8px;border:1px solid var(--line);background:var(--bg)}
+.v{border-top:1px solid var(--line);padding-top:6px;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:2px 8px;align-items:center;font-size:13px}
+.ver{font:700 14px "Barlow Condensed",sans-serif;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:var(--bg);border:1px solid var(--line)}
+.chip{font-size:11px;font-weight:600;border-radius:999px;padding:2px 6px;white-space:nowrap}
+.st-cola{background:var(--violet-bg);color:var(--violet)}
+.st-pub{background:var(--jade-bg);color:var(--jade)}
+.st-proc{background:var(--amber-bg);color:var(--amber)}
+.st-err{background:var(--red-bg);color:var(--red)}
+.m{grid-column:2 / 4;color:var(--sub);font-size:12px}
+.m b{color:var(--ink);font-weight:600}
+.best{outline:2px solid var(--jade);outline-offset:1px}
+a{color:inherit}
+.gap{color:var(--amber);font-weight:600;font-size:13px;margin:auto 0}
+.msg{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px;margin-bottom:16px}
+.msg.err{border-color:var(--red);color:var(--red)}
+footer{margin-top:20px;color:var(--sub);font-size:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Planificación de reels</h1>
+      <div class="sub" id="updated">Cargando…</div>
+    </div>
+    <div class="nav">
+      <button id="prev" aria-label="Semana anterior">‹</button>
+      <div class="week" id="weeklabel"></div>
+      <button id="next" aria-label="Semana siguiente">›</button>
+      <button id="todayBtn">Hoy</button>
+      <button id="reload" title="Volver a leer la cola">↻</button>
+    </div>
+  </header>
+  <div id="msg"></div>
+  <div class="stats" id="stats"></div>
+  <div class="grid" id="grid"></div>
+  <footer>
+    Lee en directo la cola del publicador (repositorio <a href="https://github.com/Manuasg/reels-media/tree/main/cola">Manuasg/reels-media</a>).
+    Horas de Madrid. Las métricas son la última foto diaria del publicador: vistas, % que pasa de 3 s (100 − tasa de omisión) y guardados.
+    El recuadro verde marca la versión con más % de &gt;3 s.
+  </footer>
+</div>
+<script>
+(() => {
+  const OWNER = "Manuasg", REPO = "reels-media", BRANCH = "main";
+  const RAW = `https://raw.githubusercontent.com/${OWNER}/${REPO}/${BRANCH}/`;
+  const TREE = `https://api.github.com/repos/${OWNER}/${REPO}/git/trees/${BRANCH}?recursive=1`;
+  const TZ = "Europe/Madrid";
+  const FOLDERS = { cola: "cola", publicando: "proc", publicado: "pub", errores: "err" };
+  const LABEL = { cola: "Programado", proc: "Publicando", pub: "Publicado", err: "Error" };
+  const ORDER = { C: 0, A: 1, B: 2 };
+  const ALIAS = { simplex: ["E3", "Simplex"], cobb_douglas: ["E1", "Cobb-Douglas"], rendimientos: ["E2", "Rendimientos"] };
+  const $ = id => document.getElementById(id);
+
+  let tree = null, weekStart = mondayOf(todayKey());
+  const cache = new Map();
+
+  function todayKey() {
+    const p = new Intl.DateTimeFormat("en-CA", { timeZone: TZ, year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
+    return p.replaceAll("-", "");
+  }
+  function keyToDate(k) { return new Date(Date.UTC(+k.slice(0, 4), +k.slice(4, 6) - 1, +k.slice(6, 8))); }
+  function dateToKey(d) { return d.toISOString().slice(0, 10).replaceAll("-", ""); }
+  function addDays(k, n) { const d = keyToDate(k); d.setUTCDate(d.getUTCDate() + n); return dateToKey(d); }
+  function mondayOf(k) { const d = keyToDate(k); const wd = (d.getUTCDay() + 6) % 7; return addDays(k, -wd); }
+  const fmtDay = new Intl.DateTimeFormat("es-ES", { weekday: "long", day: "numeric", timeZone: "UTC" });
+  const fmtShort = new Intl.DateTimeFormat("es-ES", { day: "numeric", month: "short", timeZone: "UTC" });
+  const nf = new Intl.NumberFormat("es-ES");
+
+  async function getJSON(url) {
+    if (cache.has(url)) return cache.get(url);
+    const p = fetch(url, { cache: "no-store" }).then(r => { if (!r.ok) throw new Error(r.status + " " + url); return r.json(); });
+    cache.set(url, p);
+    try { return await p; } catch (e) { cache.delete(url); throw e; }
+  }
+
+  async function loadTree() {
+    const r = await fetch(TREE, { cache: "no-store" });
+    if (r.status === 403 || r.status === 429) throw new Error("GitHub ha limitado las consultas desde esta conexión (60 por hora). Prueba dentro de un rato.");
+    if (!r.ok) throw new Error("No se pudo leer el repositorio (" + r.status + ").");
+    tree = (await r.json()).tree.map(t => t.path);
+  }
+
+  function prettyName(reel) {
+    if (ALIAS[reel]) return { code: ALIAS[reel][0], name: ALIAS[reel][1] };
+    const m = reel.match(/^([a-z]+\d+(?:_\d+)?)_(.*)$/i);
+    const code = m ? m[1].toUpperCase().replace("_", ".") : "";
+    const name = (m ? m[2] : reel).replaceAll("_", " ");
+    return { code, name: name.charAt(0).toUpperCase() + name.slice(1) };
+  }
+
+  function firstSentence(t) {
+    if (!t) return "";
+    const line = t.split("\n").find(l => l.trim() && !l.trim().startsWith("#")) || "";
+    return line.trim();
+  }
+
+  async function render() {
+    const end = addDays(weekStart, 6);
+    $("weeklabel").textContent = `${fmtShort.format(keyToDate(weekStart))} – ${fmtShort.format(keyToDate(end))}`;
+    const days = Array.from({ length: 7 }, (_, i) => addDays(weekStart, i));
+    const files = tree.filter(p => /\.json$/.test(p))
+      .map(p => { const [folder, name] = p.split("/"); return { p, folder, name }; })
+      .filter(f => FOLDERS[f.folder] && /^\d{8}_\d{4}_/.test(f.name) && days.includes(f.name.slice(0, 8)));
+
+    const items = await Promise.all(files.map(async f => {
+      try {
+        const d = await getJSON(RAW + f.p);
+        return { ...d, status: FOLDERS[f.folder], day: f.name.slice(0, 8), hhmm: f.name.slice(9, 11) + ":" + f.name.slice(11, 13) };
+      } catch { return null; }
+    }));
+
+    const byDay = {};
+    for (const it of items.filter(Boolean)) {
+      (byDay[it.day] ??= {});
+      (byDay[it.day][it.reel] ??= []).push(it);
+    }
+
+    const reels = [...new Set(items.filter(Boolean).filter(i => i.status === "pub").map(i => i.reel))];
+    const metrics = {};
+    await Promise.all(reels.map(async r => {
+      if (!tree.includes(`metricas/${r}.json`)) return;
+      try { metrics[r] = await getJSON(RAW + `metricas/${r}.json`); } catch {}
+    }));
+
+    const today = todayKey();
+    let nPub = 0, nCola = 0, gaps = 0, nErr = 0;
+    const grid = $("grid"); grid.replaceChildren();
+    for (const k of days) {
+      const box = document.createElement("section");
+      box.className = "day" + (k === today ? " today" : "");
+      const dh = document.createElement("div"); dh.className = "dh";
+      const b = document.createElement("b"); b.textContent = fmtDay.format(keyToDate(k));
+      const s = document.createElement("span"); s.textContent = k === today ? "hoy" : "";
+      dh.append(b, s); box.append(dh);
+
+      const reelsToday = byDay[k] || {};
+      if (!Object.keys(reelsToday).length) {
+        box.classList.add("empty");
+        const g = document.createElement("div"); g.className = "gap";
+        g.textContent = k >= today ? "Sin reel programado" : "Sin reel";
+        if (k >= today) gaps++;
+        box.append(g);
+      }
+      for (const [reel, vers] of Object.entries(reelsToday)) {
+        vers.sort((a, b) => (ORDER[a.version] ?? 9) - (ORDER[b.version] ?? 9));
+        const { code, name } = prettyName(reel);
+        const t = document.createElement("div"); t.className = "reel";
+        if (code) { const c = document.createElement("span"); c.className = "code"; c.textContent = code; t.append(c); }
+        t.append(document.createTextNode(name));
+        box.append(t);
+        const withCover = vers.find(v => v.status === "cola" && v.portada && tree.includes("cola/" + v.portada));
+        if (withCover) {
+          const img = document.createElement("img"); img.className = "cover"; img.loading = "lazy";
+          img.alt = "Portada de " + name; img.src = RAW + "cola/" + withCover.portada;
+          box.append(img);
+        }
+        const d = document.createElement("div"); d.className = "desc"; d.textContent = firstSentence(vers[0].texto);
+        box.append(d);
+
+        const m = metrics[reel] || {};
+        const rate = v => { const f = m[v]?.fotos?.at(-1); return f && f.views > 0 && f.reels_skip_rate != null ? 100 - f.reels_skip_rate : null; };
+        const rates = vers.map(v => rate(v.version)).filter(x => x != null);
+        const best = rates.length > 1 ? Math.max(...rates) : null;
+
+        for (const v of vers) {
+          if (v.status === "pub") nPub++; else if (v.status === "cola") nCola++; else if (v.status === "err") nErr++;
+          const row = document.createElement("div"); row.className = "v";
+          const ver = document.createElement("span"); ver.className = "ver"; ver.textContent = v.version || "·";
+          const hr = document.createElement("span"); hr.textContent = v.hhmm + (v.prueba === false ? " · normal" : "");
+          let chip;
+          const link = v.permalink || (v.permalinks && v.permalinks[0]);
+          if (v.status === "pub" && link) { chip = document.createElement("a"); chip.href = link; chip.target = "_blank"; chip.rel = "noopener"; chip.textContent = "Publicado ↗"; }
+          else { chip = document.createElement("span"); chip.textContent = LABEL[v.status]; }
+          chip.className = "chip st-" + v.status;
+          row.append(ver, hr, chip);
+          const f = m[v.version]?.fotos?.at(-1);
+          if (v.status === "pub" && f) {
+            const mm = document.createElement("div"); mm.className = "m";
+            const r = rate(v.version);
+            const parts = [["vistas", nf.format(f.views)], [">3 s", r != null ? r.toFixed(1).replace(".", ",") + " %" : "—"], ["guard.", nf.format(f.saved)]];
+            parts.forEach(([lab, val], i) => {
+              const bb = document.createElement("b"); bb.textContent = val;
+              mm.append(bb, document.createTextNode(" " + lab + (i < parts.length - 1 ? " · " : "")));
+            });
+            row.append(mm);
+            if (best != null && r === best) ver.classList.add("best");
+          }
+          box.append(row);
+        }
+      }
+      grid.append(box);
+    }
+
+    const stats = $("stats"); stats.replaceChildren();
+    const add = (n, label, warn) => { const d = document.createElement("div"); d.className = "stat" + (warn ? " warn" : ""); const b = document.createElement("b"); b.textContent = n; const s = document.createElement("span"); s.textContent = label; d.append(b, s); stats.append(d); };
+    add(nPub, "publicados esta semana");
+    add(nCola, "programados");
+    add(gaps, gaps === 1 ? "día sin reel" : "días sin reel", gaps > 0);
+    if (nErr) add(nErr, "con error", true);
+    const next = tree.filter(p => p.startsWith("cola/") && /^cola\/\d{8}_\d{4}_.*\.json$/.test(p)).sort()[0];
+    if (next) {
+      const n = next.slice(5);
+      add(`${fmtShort.format(keyToDate(n.slice(0, 8)))} ${n.slice(9, 11)}:${n.slice(11, 13)}`, "próxima publicación");
+    }
+  }
+
+  async function refresh(full) {
+    $("msg").replaceChildren();
+    try {
+      if (full || !tree) { cache.clear(); await loadTree(); }
+      await render();
+      $("updated").textContent = "Actualizado a las " + new Date().toLocaleTimeString("es-ES", { timeZone: TZ, hour: "2-digit", minute: "2-digit" });
+    } catch (e) {
+      const d = document.createElement("div"); d.className = "msg err"; d.textContent = e.message; $("msg").append(d);
+      $("updated").textContent = "";
+    }
+  }
+
+  $("prev").onclick = () => { weekStart = addDays(weekStart, -7); refresh(false); };
+  $("next").onclick = () => { weekStart = addDays(weekStart, 7); refresh(false); };
+  $("todayBtn").onclick = () => { weekStart = mondayOf(todayKey()); refresh(false); };
+  $("reload").onclick = () => refresh(true);
+  refresh(true);
+})();
+</script>
+</body>
+</html>
