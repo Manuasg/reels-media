@@ -215,7 +215,7 @@ summary{cursor:pointer;margin-top:8px}
     for (const it of items) ((byDay[it.day] ??= {})[it.reel] ??= []).push(it);
 
     const metrics = {};
-    const mfiles = tree.filter(p => /^metricas\/.*\.json$/.test(p)).slice(-40);
+    const mfiles = tree.filter(p => /^metricas\/[^_][^/]*\.json$/.test(p)).slice(-40);
     await Promise.all(mfiles.map(async p => { try { metrics[p.slice(9, -5)] = await getJSON(RAW + p); } catch {} }));
 
     // Avisos

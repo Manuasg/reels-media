@@ -32,6 +32,13 @@ jobs:
           IG_TOKEN: ${{ secrets.IG_TOKEN }}
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
         run: python publicador/metricas.py
+      - name: Leer estadísticas de la cuenta
+        if: steps.hay.outputs.si == '1'
+        continue-on-error: true
+        env:
+          IG_TOKEN: ${{ secrets.IG_TOKEN }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+        run: python publicador/cuenta.py
       - name: Guardar
         if: steps.hay.outputs.si == '1'
         run: |
