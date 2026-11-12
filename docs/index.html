@@ -346,9 +346,9 @@ h3{font:600 15px "Barlow Condensed",sans-serif;margin:0 0 6px;color:var(--sub);t
 
 
   const PAIS = new Intl.DisplayNames(["es"], { type: "region" });
-  function bars(title, obj, top, labelFn) {
+  function bars(title, obj, top, labelFn, total, keep) {
     const w = el("div"); w.append(el("h3", null, title));
-    const ent = Object.entries(obj || {}).sort((a, b) => b[1] - a[1]), tot = ent.reduce((s, e) => s + e[1], 0) || 1, mx = ent[0]?.[1] || 1;
+    let ent = Object.entries(obj || {}); const mx = Math.max(1, ...ent.map(e => e[1])), tot = total || ent.reduce((s, e) => s + e[1], 0) || 1; ent = keep ? ent.sort((a, b) => a[0].localeCompare(b[0])) : ent.sort((a, b) => b[1] - a[1]);
     const g = el("div", "bars");
     ent.slice(0, top).forEach(([k, v]) => { const bar = el("i"); bar.style.width = Math.max(2, 100 * v / mx) + "%"; const c = el("div"); c.append(bar); g.append(el("span", null, labelFn ? labelFn(k) : k), c, el("span", "n", pct(100 * v / tot, 0))); });
     w.append(g); return w;
@@ -383,8 +383,8 @@ h3{font:600 15px "Barlow Condensed",sans-serif;margin:0 0 6px;color:var(--sub);t
     const d = c.demografia;
     if (d) {
       const f = el("div", "four");
-      f.append(bars("País", d.country, 8, k => { try { return PAIS.of(k); } catch { return k; } }), bars("Ciudad", d.city, 8, k => k.split(",")[0]),
-        bars("Edad", Object.fromEntries(Object.entries(d.age || {})), 7), bars("Sexo", d.gender, 3, k => ({ M: "Hombres", F: "Mujeres", U: "Sin dato" }[k] || k)));
+      f.append(bars("País", d.country, 8, k => { try { return PAIS.of(k); } catch { return k; } }), bars("Ciudad", d.city, 8, k => k.split(",")[0], u.seguidores),
+        bars("Edad", d.age, 7, null, null, true), bars("Sexo", d.gender, 3, k => ({ M: "Hombres", F: "Mujeres", U: "Sin dato" }[k] || k)));
       box.append(f);
       box.append(el("div", "muted", `Seguidores con datos demográficos, leídos el ${new Date(d.hora).toLocaleDateString("es-ES", { timeZone: TZ })}. Se actualiza cada mañana.`));
     }
