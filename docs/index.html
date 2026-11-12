@@ -65,6 +65,27 @@ a{color:inherit}
 .msg{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px;margin-bottom:16px}
 .msg.err{border-color:var(--red);color:var(--red)}
 footer{margin-top:20px;color:var(--sub);font-size:12px}
+
+.day .reelbtn{all:unset;cursor:pointer;display:block;width:100%}
+.day .reelbtn:focus-visible{outline:2px solid var(--jade);border-radius:6px}
+.verd{font-size:12.5px;font-weight:600;border-radius:8px;padding:5px 8px;background:var(--jade-bg);color:var(--jade)}
+.verd.wait{background:var(--bg);color:var(--sub);border:1px dashed var(--line)}
+.verd small{display:block;font-weight:400;color:var(--sub)}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-top:16px}
+.panel h2{font:700 20px "Barlow Condensed",sans-serif;margin:0 0 8px}
+.panel pre{white-space:pre-wrap;font:13.5px/1.45 Barlow,sans-serif;margin:8px 0 0;color:var(--ink)}
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13.5px;font-variant-numeric:tabular-nums}
+th,td{padding:6px 8px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+th{color:var(--sub);font-weight:500;font-size:12px}
+tr.win td{background:var(--jade-bg)}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:800px){.cols{grid-template-columns:1fr}}
+ul.pend{list-style:none;margin:0;padding:0}
+ul.pend li{padding:5px 0;border-bottom:1px solid var(--line);font-size:14px}
+.muted{color:var(--sub);font-size:12.5px}
+.stat.ok{border-color:var(--jade)}
 </style>
 </head>
 <body>
@@ -85,38 +106,46 @@ footer{margin-top:20px;color:var(--sub);font-size:12px}
   <div id="msg"></div>
   <div class="stats" id="stats"></div>
   <div class="grid" id="grid"></div>
+  <div class="panel" id="detail" hidden></div>
+  <div class="cols">
+    <div class="panel"><h2>Pendientes de grabar</h2><div class="muted" id="pendinfo"></div><ul class="pend" id="pend"></ul></div>
+    <div class="panel"><h2>Qué gancho gana</h2><div id="hooks" class="muted">Calculando…</div>
+      <h2 style="margin-top:14px">Sin guion todavía</h2><ul class="pend" id="bloq"></ul></div>
+  </div>
   <footer>
-    Lee en directo la cola del publicador (repositorio <a href="https://github.com/Manuasg/reels-media/tree/main/cola">Manuasg/reels-media</a>).
-    Horas de Madrid. Las métricas son la última foto diaria del publicador: vistas, % que pasa de 3 s (100 − tasa de omisión) y guardados.
-    El recuadro verde marca la versión con más % de &gt;3 s.
+    Lee en directo la cola del publicador (<a href="https://github.com/Manuasg/reels-media/tree/main/cola">Manuasg/reels-media</a>). Horas de Madrid.
+    Métricas: última foto diaria del publicador. «&gt;3 s» = 100 − tasa de omisión.
+    Veredicto: gana quien saca 5 puntos o más de &gt;3 s; si no, decide la tasa de guardados + compartidos. Con 150 vistas o menos no es fiable.
+    <span id="tok"></span>
   </footer>
 </div>
 <script>
 (() => {
   const OWNER = "Manuasg", REPO = "reels-media", BRANCH = "main";
   const RAW = `https://raw.githubusercontent.com/${OWNER}/${REPO}/${BRANCH}/`;
-  const TREE = `https://api.github.com/repos/${OWNER}/${REPO}/git/trees/${BRANCH}?recursive=1`;
+  const API = `https://api.github.com/repos/${OWNER}/${REPO}/`;
   const TZ = "Europe/Madrid";
   const FOLDERS = { cola: "cola", publicando: "proc", publicado: "pub", errores: "err" };
   const LABEL = { cola: "Programado", proc: "Publicando", pub: "Publicado", err: "Error" };
   const ORDER = { C: 0, A: 1, B: 2 };
+  const HOOK = { A: "cifra", B: "pregunta", C: "contradicción" };
   const ALIAS = { simplex: ["E3", "Simplex"], cobb_douglas: ["E1", "Cobb-Douglas"], rendimientos: ["E2", "Rendimientos"] };
   const $ = id => document.getElementById(id);
+  const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
 
-  let tree = null, weekStart = mondayOf(todayKey());
+  let tree = null, weekStart = mondayOf(todayKey()), selected = null, runs = null, datos = null;
   const cache = new Map();
 
-  function todayKey() {
-    const p = new Intl.DateTimeFormat("en-CA", { timeZone: TZ, year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
-    return p.replaceAll("-", "");
-  }
+  function todayKey() { return new Intl.DateTimeFormat("en-CA", { timeZone: TZ, year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date()).replaceAll("-", ""); }
   function keyToDate(k) { return new Date(Date.UTC(+k.slice(0, 4), +k.slice(4, 6) - 1, +k.slice(6, 8))); }
   function dateToKey(d) { return d.toISOString().slice(0, 10).replaceAll("-", ""); }
   function addDays(k, n) { const d = keyToDate(k); d.setUTCDate(d.getUTCDate() + n); return dateToKey(d); }
-  function mondayOf(k) { const d = keyToDate(k); const wd = (d.getUTCDay() + 6) % 7; return addDays(k, -wd); }
+  function mondayOf(k) { const d = keyToDate(k); return addDays(k, -((d.getUTCDay() + 6) % 7)); }
   const fmtDay = new Intl.DateTimeFormat("es-ES", { weekday: "long", day: "numeric", timeZone: "UTC" });
-  const fmtShort = new Intl.DateTimeFormat("es-ES", { day: "numeric", month: "short", timeZone: "UTC" });
+  const fmtShort = new Intl.DateTimeFormat("es-ES", { weekday: "short", day: "numeric", month: "short", timeZone: "UTC" });
+  const fmtRange = new Intl.DateTimeFormat("es-ES", { day: "numeric", month: "short", timeZone: "UTC" });
   const nf = new Intl.NumberFormat("es-ES");
+  const pct = (x, d = 1) => x == null ? "—" : x.toFixed(d).replace(".", ",") + " %";
 
   async function getJSON(url) {
     if (cache.has(url)) return cache.get(url);
@@ -126,10 +155,12 @@ footer{margin-top:20px;color:var(--sub);font-size:12px}
   }
 
   async function loadTree() {
-    const r = await fetch(TREE, { cache: "no-store" });
+    const r = await fetch(API + `git/trees/${BRANCH}?recursive=1`, { cache: "no-store" });
     if (r.status === 403 || r.status === 429) throw new Error("GitHub ha limitado las consultas desde esta conexión (60 por hora). Prueba dentro de un rato.");
     if (!r.ok) throw new Error("No se pudo leer el repositorio (" + r.status + ").");
     tree = (await r.json()).tree.map(t => t.path);
+    try { runs = (await (await fetch(API + "actions/workflows/publicar.yml/runs?per_page=20", { cache: "no-store" })).json()).workflow_runs || null; } catch { runs = null; }
+    try { datos = await getJSON(RAW + "docs/datos.json"); } catch { datos = null; }
   }
 
   function prettyName(reel) {
@@ -139,137 +170,171 @@ footer{margin-top:20px;color:var(--sub);font-size:12px}
     const name = (m ? m[2] : reel).replaceAll("_", " ");
     return { code, name: name.charAt(0).toUpperCase() + name.slice(1) };
   }
+  const firstSentence = t => ((t || "").split("\n").find(l => l.trim() && !l.trim().startsWith("#")) || "").trim();
+  const fichas = () => tree.filter(p => /\.json$/.test(p)).map(p => { const [folder, name] = p.split("/"); return { p, folder, name }; })
+    .filter(f => FOLDERS[f.folder] && /^\d{8}_\d{4}_/.test(f.name));
 
-  function firstSentence(t) {
-    if (!t) return "";
-    const line = t.split("\n").find(l => l.trim() && !l.trim().startsWith("#")) || "";
-    return line.trim();
+  // Última foto de métricas de una versión, con tasas calculadas
+  function last(m, v) {
+    const f = m?.[v]?.fotos?.at(-1);
+    if (!f) return null;
+    const ok = f.views > 0;
+    return { ...f, rate: ok && f.reels_skip_rate != null ? 100 - f.reels_skip_rate : null,
+      keep: ok ? 100 * ((f.saved || 0) + (f.shares || 0)) / f.views : null,
+      secs: f.ig_reels_avg_watch_time ? f.ig_reels_avg_watch_time / 1000 : null,
+      publicado: m[v].publicado };
+  }
+
+  // Veredicto con el criterio de Manuel
+  function verdict(m) {
+    const vs = Object.keys(m || {}).map(v => ({ v, ...(last(m, v) || {}) })).filter(x => x.rate != null);
+    if (vs.length < 2) return null;
+    vs.sort((a, b) => b.rate - a.rate);
+    const low = vs.filter(x => x.views <= 150).map(x => x.v);
+    const fresh = vs.some(x => x.publicado && (new Date(x.hora) - new Date(x.publicado)) < 20 * 3600e3);
+    let winner, reason;
+    if (vs[0].rate - vs[1].rate >= 5) { winner = vs[0].v; reason = `gana por gancho: ${pct(vs[0].rate)} frente a ${pct(vs[1].rate)} de >3 s`; }
+    else {
+      const tied = vs.filter(x => vs[0].rate - x.rate < 5).sort((a, b) => b.keep - a.keep || b.views - a.views);
+      winner = tied[0].v; reason = `empate de gancho (${tied.map(x => x.v + " " + pct(x.rate)).join(", ")}); decide guardados + compartidos: ${pct(tied[0].keep, 2)}`;
+    }
+    return { winner, reason, low, fresh };
   }
 
   async function render() {
-    const end = addDays(weekStart, 6);
-    $("weeklabel").textContent = `${fmtShort.format(keyToDate(weekStart))} – ${fmtShort.format(keyToDate(end))}`;
+    const end = addDays(weekStart, 6), today = todayKey();
+    $("weeklabel").textContent = `${fmtRange.format(keyToDate(weekStart))} – ${fmtRange.format(keyToDate(end))}`;
     const days = Array.from({ length: 7 }, (_, i) => addDays(weekStart, i));
-    const files = tree.filter(p => /\.json$/.test(p))
-      .map(p => { const [folder, name] = p.split("/"); return { p, folder, name }; })
-      .filter(f => FOLDERS[f.folder] && /^\d{8}_\d{4}_/.test(f.name) && days.includes(f.name.slice(0, 8)));
-
-    const items = await Promise.all(files.map(async f => {
-      try {
-        const d = await getJSON(RAW + f.p);
-        return { ...d, status: FOLDERS[f.folder], day: f.name.slice(0, 8), hhmm: f.name.slice(9, 11) + ":" + f.name.slice(11, 13) };
-      } catch { return null; }
-    }));
-
+    const all = fichas();
+    const files = all.filter(f => days.includes(f.name.slice(0, 8)));
+    const items = (await Promise.all(files.map(async f => {
+      try { return { ...(await getJSON(RAW + f.p)), status: FOLDERS[f.folder], day: f.name.slice(0, 8), hhmm: f.name.slice(9, 11) + ":" + f.name.slice(11, 13) }; } catch { return null; }
+    }))).filter(Boolean);
     const byDay = {};
-    for (const it of items.filter(Boolean)) {
-      (byDay[it.day] ??= {});
-      (byDay[it.day][it.reel] ??= []).push(it);
-    }
+    for (const it of items) ((byDay[it.day] ??= {})[it.reel] ??= []).push(it);
 
-    const reels = [...new Set(items.filter(Boolean).filter(i => i.status === "pub").map(i => i.reel))];
     const metrics = {};
-    await Promise.all(reels.map(async r => {
-      if (!tree.includes(`metricas/${r}.json`)) return;
-      try { metrics[r] = await getJSON(RAW + `metricas/${r}.json`); } catch {}
-    }));
+    const mfiles = tree.filter(p => /^metricas\/.*\.json$/.test(p)).slice(-40);
+    await Promise.all(mfiles.map(async p => { try { metrics[p.slice(9, -5)] = await getJSON(RAW + p); } catch {} }));
 
-    const today = todayKey();
-    let nPub = 0, nCola = 0, gaps = 0, nErr = 0;
+    // Avisos
+    const msg = $("msg"); msg.replaceChildren();
+    const stuck = all.filter(f => f.folder === "publicando" || f.folder === "errores");
+    if (stuck.length) msg.append(el("div", "msg err", `Hay ${stuck.length} ficha(s) que necesitan atención: ` + stuck.map(f => f.folder + "/" + f.name).join(", ") + ". Avisa a Claude."));
+    const failed = (runs || []).filter(r => r.conclusion === "failure");
+    if (failed.length) msg.append(el("div", "msg err", `El publicador ha fallado ${failed.length} vez/veces en sus últimas 20 ejecuciones (la última, ${new Date(failed[0].created_at).toLocaleString("es-ES", { timeZone: TZ })}).`));
+
+    let nPub = 0, nCola = 0;
     const grid = $("grid"); grid.replaceChildren();
     for (const k of days) {
-      const box = document.createElement("section");
-      box.className = "day" + (k === today ? " today" : "");
-      const dh = document.createElement("div"); dh.className = "dh";
-      const b = document.createElement("b"); b.textContent = fmtDay.format(keyToDate(k));
-      const s = document.createElement("span"); s.textContent = k === today ? "hoy" : "";
-      dh.append(b, s); box.append(dh);
-
+      const box = el("section", "day" + (k === today ? " today" : ""));
+      const dh = el("div", "dh"); dh.append(el("b", null, fmtDay.format(keyToDate(k))), el("span", null, k === today ? "hoy" : "")); box.append(dh);
       const reelsToday = byDay[k] || {};
-      if (!Object.keys(reelsToday).length) {
-        box.classList.add("empty");
-        const g = document.createElement("div"); g.className = "gap";
-        g.textContent = k >= today ? "Sin reel programado" : "Sin reel";
-        if (k >= today) gaps++;
-        box.append(g);
-      }
+      if (!Object.keys(reelsToday).length) { box.classList.add("empty"); box.append(el("div", "gap", k >= today ? "Sin reel programado" : "Sin reel")); }
       for (const [reel, vers] of Object.entries(reelsToday)) {
         vers.sort((a, b) => (ORDER[a.version] ?? 9) - (ORDER[b.version] ?? 9));
         const { code, name } = prettyName(reel);
-        const t = document.createElement("div"); t.className = "reel";
-        if (code) { const c = document.createElement("span"); c.className = "code"; c.textContent = code; t.append(c); }
-        t.append(document.createTextNode(name));
-        box.append(t);
-        const withCover = vers.find(v => v.status === "cola" && v.portada && tree.includes("cola/" + v.portada));
-        if (withCover) {
-          const img = document.createElement("img"); img.className = "cover"; img.loading = "lazy";
-          img.alt = "Portada de " + name; img.src = RAW + "cola/" + withCover.portada;
-          box.append(img);
-        }
-        const d = document.createElement("div"); d.className = "desc"; d.textContent = firstSentence(vers[0].texto);
-        box.append(d);
-
-        const m = metrics[reel] || {};
-        const rate = v => { const f = m[v]?.fotos?.at(-1); return f && f.views > 0 && f.reels_skip_rate != null ? 100 - f.reels_skip_rate : null; };
-        const rates = vers.map(v => rate(v.version)).filter(x => x != null);
-        const best = rates.length > 1 ? Math.max(...rates) : null;
-
+        const btn = el("button", "reelbtn"); btn.title = "Ver detalle";
+        const t = el("div", "reel"); if (code) t.append(el("span", "code", code)); t.append(document.createTextNode(name)); btn.append(t);
+        btn.append(el("div", "desc", firstSentence(vers[0].texto)));
+        btn.onclick = () => { selected = { reel, vers }; showDetail(metrics); $("detail").scrollIntoView({ behavior: "smooth", block: "nearest" }); };
+        box.append(btn);
+        const cov = vers.find(v => v.status === "cola" && v.portada && tree.includes("cola/" + v.portada));
+        if (cov) { const img = el("img", "cover"); img.loading = "lazy"; img.alt = "Portada de " + name; img.src = RAW + "cola/" + cov.portada; box.append(img); }
+        const m = metrics[reel], vd = verdict(m);
         for (const v of vers) {
-          if (v.status === "pub") nPub++; else if (v.status === "cola") nCola++; else if (v.status === "err") nErr++;
-          const row = document.createElement("div"); row.className = "v";
-          const ver = document.createElement("span"); ver.className = "ver"; ver.textContent = v.version || "·";
-          const hr = document.createElement("span"); hr.textContent = v.hhmm + (v.prueba === false ? " · normal" : "");
-          let chip;
+          if (v.status === "pub") nPub++; else if (v.status === "cola") nCola++;
+          const row = el("div", "v");
+          const ver = el("span", "ver" + (vd && vd.winner === v.version ? " best" : ""), v.version || "·");
           const link = v.permalink || (v.permalinks && v.permalinks[0]);
-          if (v.status === "pub" && link) { chip = document.createElement("a"); chip.href = link; chip.target = "_blank"; chip.rel = "noopener"; chip.textContent = "Publicado ↗"; }
-          else { chip = document.createElement("span"); chip.textContent = LABEL[v.status]; }
+          let chip;
+          if (v.status === "pub" && link) { chip = el("a", null, "Publicado ↗"); chip.href = link; chip.target = "_blank"; chip.rel = "noopener"; }
+          else chip = el("span", null, LABEL[v.status]);
           chip.className = "chip st-" + v.status;
-          row.append(ver, hr, chip);
-          const f = m[v.version]?.fotos?.at(-1);
+          row.append(ver, el("span", null, v.hhmm + (v.prueba === false ? " · normal" : "")), chip);
+          const f = last(m, v.version);
           if (v.status === "pub" && f) {
-            const mm = document.createElement("div"); mm.className = "m";
-            const r = rate(v.version);
-            const parts = [["vistas", nf.format(f.views)], [">3 s", r != null ? r.toFixed(1).replace(".", ",") + " %" : "—"], ["guard.", nf.format(f.saved)]];
-            parts.forEach(([lab, val], i) => {
-              const bb = document.createElement("b"); bb.textContent = val;
-              mm.append(bb, document.createTextNode(" " + lab + (i < parts.length - 1 ? " · " : "")));
-            });
+            const mm = el("div", "m");
+            [["vistas", nf.format(f.views)], [">3 s", pct(f.rate)], ["guard.", nf.format(f.saved || 0)]].forEach(([lab, val], i, a) => mm.append(el("b", null, val), document.createTextNode(" " + lab + (i < a.length - 1 ? " · " : ""))));
             row.append(mm);
-            if (best != null && r === best) ver.classList.add("best");
           }
           box.append(row);
+        }
+        if (vers.every(v => v.status === "pub")) {
+          if (vd) { const d = el("div", "verd", `Compartir: ${vd.winner} (${HOOK[vd.winner] || ""})`); d.append(el("small", null, (vd.fresh ? "Provisional, menos de un día de datos. " : "") + (vd.low.length ? `Poco fiable: ${vd.low.join(", ")} con 150 vistas o menos.` : ""))); box.append(d); }
+          else box.append(el("div", "verd wait", "Veredicto: aún sin métricas"));
         }
       }
       grid.append(box);
     }
 
+    // Resumen
     const stats = $("stats"); stats.replaceChildren();
-    const add = (n, label, warn) => { const d = document.createElement("div"); d.className = "stat" + (warn ? " warn" : ""); const b = document.createElement("b"); b.textContent = n; const s = document.createElement("span"); s.textContent = label; d.append(b, s); stats.append(d); };
-    add(nPub, "publicados esta semana");
-    add(nCola, "programados");
-    add(gaps, gaps === 1 ? "día sin reel" : "días sin reel", gaps > 0);
-    if (nErr) add(nErr, "con error", true);
-    const next = tree.filter(p => p.startsWith("cola/") && /^cola\/\d{8}_\d{4}_.*\.json$/.test(p)).sort()[0];
-    if (next) {
-      const n = next.slice(5);
-      add(`${fmtShort.format(keyToDate(n.slice(0, 8)))} ${n.slice(9, 11)}:${n.slice(11, 13)}`, "próxima publicación");
+    const add = (n, label, cls) => { const d = el("div", "stat" + (cls ? " " + cls : "")); d.append(el("b", null, n), el("span", null, label)); stats.append(d); };
+    add(nPub, "publicados esta semana"); add(nCola, "programados esta semana");
+    const cola = all.filter(f => f.folder === "cola").map(f => f.name).sort();
+    if (cola[0]) add(`${fmtShort.format(keyToDate(cola[0].slice(0, 8)))} ${cola[0].slice(9, 11)}:${cola[0].slice(11, 13)}`, "próxima publicación");
+    const used = new Set(all.map(f => f.name.slice(0, 8)));
+    let free = today; while (used.has(free)) free = addDays(free, 1);
+    const lastQueued = cola.length ? cola.at(-1).slice(0, 8) : today;
+    const margin = Math.max(0, Math.round((keyToDate(free) - keyToDate(today)) / 864e5));
+    add(fmtShort.format(keyToDate(free)), "primer día sin reel", margin <= 1 ? "warn" : "");
+    add(margin, margin === 1 ? "día de margen en cola" : "días de margen en cola", margin <= 1 ? "warn" : "");
+    if (runs && runs[0]) {
+      const mins = Math.round((Date.now() - new Date(runs[0].created_at)) / 60000);
+      const ago = mins < 60 ? `hace ${mins} min` : mins < 1440 ? `hace ${Math.round(mins / 60)} h` : `hace ${Math.round(mins / 1440)} d`;
+      add(runs[0].conclusion === "failure" ? "Fallo" : "OK", "publicador · última ejecución " + ago, runs[0].conclusion === "failure" ? "warn" : "ok");
     }
+
+    // Qué gancho gana
+    const tally = { A: 0, B: 0, C: 0 }; let n = 0;
+    for (const m of Object.values(metrics)) { const v = verdict(m); if (v && !v.low.includes(v.winner)) { tally[v.winner] = (tally[v.winner] || 0) + 1; n++; } }
+    const hk = $("hooks"); hk.replaceChildren();
+    if (!n) hk.textContent = "Aún no hay pruebas con métricas suficientes.";
+    else { hk.append(el("div", null, `En ${n} prueba(s) con métricas del publicador:`)); const ul = el("ul", "pend"); ["C", "A", "B"].forEach(v => ul.append(el("li", null, `${v} · ${HOOK[v]}: gana ${tally[v] || 0} de ${n}`))); hk.append(ul); }
+
+    // Pendientes
+    const pl = $("pend"), bl = $("bloq"); pl.replaceChildren(); bl.replaceChildren();
+    if (datos) {
+      $("pendinfo").textContent = `${datos.pendientes.length} guiones listos. Con ellos la cola llegaría hasta el ${fmtShort.format(keyToDate(addDays(free, datos.pendientes.length - 1)))}. Lista actualizada el ${datos.actualizado}.`;
+      datos.pendientes.forEach(x => { const li = el("li"); li.append(el("span", "code", x.codigo), document.createTextNode(x.titulo)); pl.append(li); });
+      (datos.bloqueadas || []).forEach(x => { const li = el("li"); li.append(el("span", "code", x.codigo), document.createTextNode(`${x.titulo} · falta: ${x.falta}`)); bl.append(li); });
+      if (datos.token_cron_caduca) { const d = Math.round((new Date(datos.token_cron_caduca) - Date.now()) / 864e5); $("tok").textContent = ` El token de cron-job.org caduca el ${datos.token_cron_caduca} (faltan ${d} días).`; }
+    } else $("pendinfo").textContent = "No se pudo leer la lista.";
+    if (selected) showDetail(metrics);
+  }
+
+  function showDetail(metrics) {
+    const { reel, vers } = selected, m = metrics[reel], vd = verdict(m), { code, name } = prettyName(reel);
+    const box = $("detail"); box.hidden = false; box.replaceChildren();
+    const h = el("h2"); if (code) h.append(el("span", "code", code)); h.append(document.createTextNode(name)); box.append(h);
+    if (vd) box.append(el("div", "verd", `Compartir: ${vd.winner}. ${vd.reason}.` + (vd.fresh ? " Provisional." : "")));
+    const tw = el("div", "tw"), tb = el("table"), hr = el("tr");
+    ["Versión", "Hora", "Estado", "Vistas", "Alcance", ">3 s", "Tiempo medio", "Me gusta", "Guardados", "Compartidos", "Coment.", "Guard.+comp."].forEach(x => hr.append(el("th", null, x)));
+    tb.append(hr);
+    for (const v of vers) {
+      const f = last(m, v.version), tr = el("tr", vd && vd.winner === v.version ? "win" : "");
+      const cells = [`${v.version} · ${HOOK[v.version] || ""}`, v.hhmm, LABEL[v.status]];
+      if (f) cells.push(nf.format(f.views), nf.format(f.reach || 0), pct(f.rate), f.secs ? f.secs.toFixed(1).replace(".", ",") + " s" : "—", nf.format(f.likes || 0), nf.format(f.saved || 0), nf.format(f.shares || 0), nf.format(f.comments || 0), pct(f.keep, 2));
+      else cells.push("—", "—", "—", "—", "—", "—", "—", "—", "—");
+      cells.forEach(c => tr.append(el("td", null, c))); tb.append(tr);
+    }
+    tw.append(tb); box.append(tw);
+    const fotos = m && Object.values(m)[0]?.fotos;
+    if (fotos?.length) box.append(el("div", "muted", `Métricas del ${new Date(fotos.at(-1).hora).toLocaleString("es-ES", { timeZone: TZ, dateStyle: "medium", timeStyle: "short" })} (${fotos.length} foto(s) guardadas).`));
+    const distinct = [...new Map(vers.map(v => [v.texto, v])).values()];
+    distinct.forEach(v => { box.append(el("div", "muted", distinct.length > 1 ? `Descripción de ${v.version}` : "Descripción")); box.append(el("pre", null, v.texto || "")); });
   }
 
   async function refresh(full) {
-    $("msg").replaceChildren();
     try {
       if (full || !tree) { cache.clear(); await loadTree(); }
       await render();
       $("updated").textContent = "Actualizado a las " + new Date().toLocaleTimeString("es-ES", { timeZone: TZ, hour: "2-digit", minute: "2-digit" });
-    } catch (e) {
-      const d = document.createElement("div"); d.className = "msg err"; d.textContent = e.message; $("msg").append(d);
-      $("updated").textContent = "";
-    }
+    } catch (e) { $("msg").replaceChildren(el("div", "msg err", e.message)); $("updated").textContent = ""; }
   }
-
-  $("prev").onclick = () => { weekStart = addDays(weekStart, -7); refresh(false); };
-  $("next").onclick = () => { weekStart = addDays(weekStart, 7); refresh(false); };
+  $("prev").onclick = () => { weekStart = addDays(weekStart, -7); selected = null; $("detail").hidden = true; refresh(false); };
+  $("next").onclick = () => { weekStart = addDays(weekStart, 7); selected = null; $("detail").hidden = true; refresh(false); };
   $("todayBtn").onclick = () => { weekStart = mondayOf(todayKey()); refresh(false); };
   $("reload").onclick = () => refresh(true);
   refresh(true);
