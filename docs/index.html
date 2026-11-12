@@ -87,6 +87,22 @@ ul.pend li{padding:5px 0;border-bottom:1px solid var(--line);font-size:14px}
 .muted{color:var(--sub);font-size:12.5px}
 summary{cursor:pointer;margin-top:8px}
 .stat.ok{border-color:var(--jade)}
+
+.kpis{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.hours{display:grid;grid-template-columns:repeat(24,minmax(0,1fr));gap:3px;align-items:end;height:150px;margin-top:8px}
+.hours div{background:var(--line);border-radius:3px 3px 0 0;position:relative;min-height:2px}
+.hours div.top{background:var(--jade)}
+.hours div.mine{outline:2px solid var(--amber);outline-offset:1px}
+.hl{display:grid;grid-template-columns:repeat(24,minmax(0,1fr));gap:3px;font-size:10.5px;color:var(--sub);text-align:center;margin-top:3px}
+.bars{display:grid;grid-template-columns:minmax(70px,auto) 1fr auto;gap:4px 8px;align-items:center;font-size:13px}
+.bars i{display:block;height:10px;border-radius:3px;background:var(--jade)}
+.bars span.n{color:var(--sub);font-variant-numeric:tabular-nums}
+.four{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-top:14px}
+@media (max-width:1000px){.four{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.four{grid-template-columns:1fr}}
+h3{font:600 15px "Barlow Condensed",sans-serif;margin:0 0 6px;color:var(--sub);text-transform:uppercase;letter-spacing:.5px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--sub);margin-top:6px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:4px;vertical-align:-1px}
 </style>
 </head>
 <body>
@@ -108,6 +124,7 @@ summary{cursor:pointer;margin-top:8px}
   <div class="stats" id="stats"></div>
   <div class="grid" id="grid"></div>
   <div class="panel" id="detail" hidden></div>
+  <div class="panel" id="comunidad"><h2>Comunidad</h2><div class="muted">Cargando…</div></div>
   <div class="cols">
     <div class="panel"><h2>Pendientes de grabar</h2><div class="muted" id="pendinfo"></div><ul class="pend" id="pend"></ul></div>
     <div class="panel"><h2>Qué gancho gana</h2><div id="hooks" class="muted">Calculando…</div>
@@ -327,10 +344,57 @@ summary{cursor:pointer;margin-top:8px}
     distinct.forEach((v, i) => { const d = el("details"); d.open = i === 0; d.append(el("summary", "muted", distinct.length > 1 ? `Descripción de ${v.version}` : "Descripción"), el("pre", null, v.texto || "")); box.append(d); });
   }
 
+
+  const PAIS = new Intl.DisplayNames(["es"], { type: "region" });
+  function bars(title, obj, top, labelFn) {
+    const w = el("div"); w.append(el("h3", null, title));
+    const ent = Object.entries(obj || {}).sort((a, b) => b[1] - a[1]), tot = ent.reduce((s, e) => s + e[1], 0) || 1, mx = ent[0]?.[1] || 1;
+    const g = el("div", "bars");
+    ent.slice(0, top).forEach(([k, v]) => { const bar = el("i"); bar.style.width = Math.max(2, 100 * v / mx) + "%"; const c = el("div"); c.append(bar); g.append(el("span", null, labelFn ? labelFn(k) : k), c, el("span", "n", pct(100 * v / tot, 0))); });
+    w.append(g); return w;
+  }
+  async function renderCuenta() {
+    const box = $("comunidad"); let c;
+    try { c = await getJSON(RAW + "metricas/_cuenta.json"); } catch { box.replaceChildren(el("h2", null, "Comunidad"), el("div", "muted", "Aún no hay estadísticas de la cuenta.")); return; }
+    box.replaceChildren(el("h2", null, "Comunidad"));
+    const h = c.historial || [], u = h.at(-1) || {}, k = el("div", "kpis");
+    const kpi = (n, label) => { const d = el("div", "stat"); d.append(el("b", null, n), el("span", null, label)); k.append(d); };
+    const prev = [...h].reverse().find(x => x.fecha <= addIso(u.fecha, -7)) || h[0];
+    const diff = prev && prev !== u && u.seguidores != null ? u.seguidores - prev.seguidores : null;
+    kpi(nf.format(u.seguidores ?? 0), "seguidores" + (diff != null ? ` (${diff >= 0 ? "+" : ""}${nf.format(diff)} desde el ${prev.fecha.slice(8)}/${prev.fecha.slice(5, 7)})` : ""));
+    [["reach", "cuentas alcanzadas (último día)"], ["views", "visualizaciones (último día)"], ["accounts_engaged", "cuentas que interactúan"], ["profile_views", "visitas al perfil"]].forEach(([f, l]) => { if (u[f] != null) kpi(nf.format(u[f]), l); });
+    box.append(k);
+
+    // Horas con más seguidores conectados (hora de Madrid)
+    const vals = c.online?.valores || [];
+    if (vals.length) {
+      const sum = Array(24).fill(0), cnt = Array(24).fill(0);
+      const hm = new Intl.DateTimeFormat("en-GB", { timeZone: TZ, hour: "2-digit", hour12: false });
+      for (const v of vals) { const base = new Date(v.end_time).getTime(); for (const [hh, n] of Object.entries(v.value)) { const mh = +hm.format(new Date(base + (+hh) * 3600e3)) % 24; sum[mh] += n; cnt[mh]++; } }
+      const avg = sum.map((s, i) => cnt[i] ? s / cnt[i] : 0), mx = Math.max(...avg), order = avg.map((v, i) => [v, i]).sort((a, b) => b[0] - a[0]), top = new Set(order.slice(0, 4).map(x => x[1]));
+      box.append(el("h3", null, "Mejores horas: seguidores conectados por hora (Madrid)"));
+      const g = el("div", "hours"), hl = el("div", "hl");
+      avg.forEach((v, i) => { const d = el("div", (top.has(i) ? "top" : "") + ([10, 11, 12].includes(i) ? " mine" : "")); d.style.height = (100 * v / mx) + "%"; d.title = `${i}:00 · ${nf.format(Math.round(v))} seguidores conectados`; g.append(d); hl.append(el("span", null, i % 2 ? "" : String(i))); });
+      box.append(g, hl);
+      const lg = el("div", "legend"); const l1 = el("span"); const i1 = el("i"); i1.style.background = "var(--jade)"; l1.append(i1, document.createTextNode("las 4 mejores horas")); const l2 = el("span"); const i2 = el("i"); i2.style.outline = "2px solid var(--amber)"; l2.append(i2, document.createTextNode("tus horas actuales (10, 11 y 12)")); lg.append(l1, l2); box.append(lg);
+      const mine = (avg[10] + avg[11] + avg[12]) / 3, best = order.slice(0, 4).map(x => x[1]).sort((a, b) => a - b);
+      box.append(el("div", "muted", `Media de ${vals.length} días. Pico: ${best.map(x => x + ":00").join(", ")} (unos ${nf.format(Math.round(order[0][0]))} conectados). A tus horas actuales hay unos ${nf.format(Math.round(mine))}, el ${pct(100 * mine / order[0][0], 0)} del pico. Instagram da este dato con unos días de retraso y en hora del Pacífico; aquí está convertido a hora de Madrid.`));
+    }
+    const d = c.demografia;
+    if (d) {
+      const f = el("div", "four");
+      f.append(bars("País", d.country, 8, k => { try { return PAIS.of(k); } catch { return k; } }), bars("Ciudad", d.city, 8, k => k.split(",")[0]),
+        bars("Edad", Object.fromEntries(Object.entries(d.age || {})), 7), bars("Sexo", d.gender, 3, k => ({ M: "Hombres", F: "Mujeres", U: "Sin dato" }[k] || k)));
+      box.append(f);
+      box.append(el("div", "muted", `Seguidores con datos demográficos, leídos el ${new Date(d.hora).toLocaleDateString("es-ES", { timeZone: TZ })}. Se actualiza cada mañana.`));
+    }
+  }
+  function addIso(iso, n) { if (!iso) return ""; const dd = new Date(iso + "T00:00:00Z"); dd.setUTCDate(dd.getUTCDate() + n); return dd.toISOString().slice(0, 10); }
   async function refresh(full) {
     try {
       if (full || !tree) { cache.clear(); await loadTree(); }
       await render();
+      await renderCuenta();
       $("updated").textContent = "Actualizado a las " + new Date().toLocaleTimeString("es-ES", { timeZone: TZ, hour: "2-digit", minute: "2-digit" });
     } catch (e) { $("msg").replaceChildren(el("div", "msg err", e.message)); $("updated").textContent = ""; }
   }
