@@ -1,26 +1,64 @@
 {
-  "actualizado": "2026-11-12",
+  "actualizado": "2026-11-13",
   "pendientes": [
-    {"codigo": "S1-T1.1", "titulo": "Presentación del tema 1: números reales (1.º Bach CCSS)"},
-    {"codigo": "I7", "titulo": "Acotar ∫₀¹ e^{x²} dx sin primitiva"},
-    {"codigo": "I10", "titulo": "Cambiar el orden de integración"},
-    {"codigo": "I11", "titulo": "Distancia media entre dos puntos al azar: 1/3"},
-    {"codigo": "I12", "titulo": "∫∫ e^{max(x², y²)} = e − 1"},
-    {"codigo": "I13", "titulo": "1/(n+1) + … + 1/(2n) → ln 2"},
-    {"codigo": "I14", "titulo": "Volumen del dónut por Pappus"},
-    {"codigo": "I16", "titulo": "∫₀^∞ x^{5/2} e^{−x} dx = 15√π/8"},
-    {"codigo": "E5", "titulo": "La Cobb-Douglas es la CES con ρ → 0"},
-    {"codigo": "E6", "titulo": "Dual del simplex"},
-    {"codigo": "E7", "titulo": "Lagrange frente a Kuhn-Tucker"},
-    {"codigo": "D1.1", "titulo": "«¡Abajo Euclides!»: abstracción primero o al final"},
-    {"codigo": "D1.2", "titulo": "¿Álgebra o datos?"},
-    {"codigo": "D1.3", "titulo": "España hoy: ¿competencias o contenidos?"}
+    {
+      "codigo": "I7",
+      "titulo": "Acotar ∫₀¹ e^{x²} dx sin primitiva"
+    },
+    {
+      "codigo": "I10",
+      "titulo": "Cambiar el orden de integración"
+    },
+    {
+      "codigo": "I11",
+      "titulo": "Distancia media entre dos puntos al azar: 1/3"
+    },
+    {
+      "codigo": "I12",
+      "titulo": "∫∫ e^{max(x², y²)} = e − 1"
+    },
+    {
+      "codigo": "I13",
+      "titulo": "1/(n+1) + … + 1/(2n) → ln 2"
+    },
+    {
+      "codigo": "I14",
+      "titulo": "Volumen del dónut por Pappus"
+    },
+    {
+      "codigo": "I16",
+      "titulo": "∫₀^∞ x^{5/2} e^{−x} dx = 15√π/8"
+    },
+    {
+      "codigo": "E5",
+      "titulo": "La Cobb-Douglas es la CES con ρ → 0"
+    },
+    {
+      "codigo": "E6",
+      "titulo": "Dual del simplex"
+    }
   ],
   "bloqueadas": [
-    {"codigo": "I4", "titulo": "Murcia 2021 P3", "falta": "enunciado exacto"},
-    {"codigo": "I8", "titulo": "Murcia 2018 P3a", "falta": "enunciado exacto"},
-    {"codigo": "I9", "titulo": "Murcia 2006 C1", "falta": "enunciado exacto"},
-    {"codigo": "I15", "titulo": "Murcia 2025 P1", "falta": "enunciado exacto"}
+    {
+      "codigo": "I4",
+      "titulo": "Murcia 2021 P3",
+      "falta": "enunciado exacto"
+    },
+    {
+      "codigo": "I8",
+      "titulo": "Murcia 2018 P3a",
+      "falta": "enunciado exacto"
+    },
+    {
+      "codigo": "I9",
+      "titulo": "Murcia 2006 C1",
+      "falta": "enunciado exacto"
+    },
+    {
+      "codigo": "I15",
+      "titulo": "Murcia 2025 P1",
+      "falta": "enunciado exacto"
+    }
   ],
   "token_cron_caduca": "2027-11-08"
 }

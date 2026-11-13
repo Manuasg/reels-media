@@ -1,0 +1,9 @@
+{
+  "publicar_a": "2026-11-15T10:00:00+01:00",
+  "video": "d12_algebra_o_datos_C.mp4",
+  "portada": "portada_d12_algebra_o_datos.png",
+  "texto": "El álgebra no se defiende por útil. Se defiende porque abre puertas.\n\n¿Qué matemáticas hay que enseñar? Capítulo 2 de 3: las mismas para todos o caminos distintos.\n\nPostura 1: casi nadie usa polinomios, pero todos leemos gráficas, encuestas, hipotecas y porcentajes. Estadística, datos y finanzas para todos.\nPostura 2: las matemáticas son acumulativas. Sin álgebra no hay cálculo, y sin cálculo no hay ingeniería, informática ni ciencia de datos de verdad.\n\nEn 2023 el borrador del marco de California permitía que la ciencia de datos sustituyera al segundo curso de álgebra. La Universidad de California dio marcha atrás. El argumento incómodo de la otra parte: muchos alumnos cursan esa álgebra y no la aprenden.\n\nEn España se elige en 4.º de ESO (Matemáticas A o B) y otra vez en Bachillerato.\n\n¿Las mismas matemáticas para todos, o caminos distintos? ¿Y a qué edad se elige? Te leo.\n\nFuentes: EdSource y California Magazine sobre el marco de matemáticas de California (2023). P. Burdman, «Rx for Data Science Education Debates».\n\n#algebra #matematicas #educacionmatematica #bachillerato #profedemates",
+  "prueba": true,
+  "reel": "d12_algebra_o_datos",
+  "version": "C"
+}

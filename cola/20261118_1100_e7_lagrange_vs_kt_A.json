@@ -1,0 +1,9 @@
+{
+  "publicar_a": "2026-11-18T11:00:00+01:00",
+  "video": "e7_lagrange_vs_kt_A.mp4",
+  "portada": "portada_e7_lagrange_vs_kt_A.png",
+  "texto": "Lagrange da −2. El máximo de verdad es 0.\n\nMaximiza f = −(x − 2)² − (y − 2)² con x + y ≤ 6.\n\n1. Si tratas la restricción como igualdad y aplicas Lagrange, sale (3, 3), con f = −2 y λ = −2.\n\n2. Pero el máximo libre está en (2, 2), que cumple la restricción: 2 + 2 = 4 < 6. Ahí f = 0.\n\n3. Kuhn-Tucker lo detecta: pide λ ≥ 0 y λ·(x + y − 6) = 0.\n\n4. En (3, 3), λ es negativo: no vale. En (2, 2) la restricción no se agota, así que λ = 0.\n\nUna λ negativa avisa: la restricción no está activa.\n\nReto: ¿a partir de qué valor de b la restricción x + y ≤ b se vuelve activa?\n\n#optimizacion #lagrange #matematicas #economia #profedemates",
+  "prueba": true,
+  "reel": "e7_lagrange_vs_kt",
+  "version": "A"
+}
