@@ -5,5 +5,6 @@
   "texto": "Kuhn-Tucker: en el óptimo el gradiente no se anula, y λ es una derivada.\n\nProblema: máx f(x) sujeto a g(x) ≤ b.\n\n1. Condiciones: ∇f = λ∇g; λ ≥ 0; λ(g − b) = 0; g(x) ≤ b.\n\n2. Son necesarias si se cumple una cualificación de restricciones (por ejemplo, Slater) y suficientes si f es cóncava y g convexa.\n\n3. Ejemplo: máx −(x − 2)² − (y − 2)² con x + y ≤ 2. Sale x = 1, y = 1, λ = 2.\n\n4. ∇f(1, 1) = (2, 2) no es 0: apunta hacia fuera del conjunto, como ∇g = (1, 1). ∇f = 2∇g, así que λ = 2 > 0.\n\n5. λ = df*/db. Aquí f*(b) = −(b − 4)²/2 para b < 4, y su derivada en b = 2 es 2. Si aflojas la restricción, el máximo no puede bajar.\n\nReto: con x + y ≤ 6, ¿cuánto vale λ?\n\n#optimizacion #matematicas #economiamatematica #oposicionesmatematicas #profedematematicas",
   "prueba": true,
   "reel": "e4_kuhn_tucker",
-  "version": "C"
+  "version": "C",
+  "inicio": "2026-11-13T09:02:16.475858+00:00"
 }
