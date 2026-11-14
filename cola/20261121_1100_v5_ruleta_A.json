@@ -1,0 +1,9 @@
+{
+  "publicar_a": "2026-11-21T11:00:00+01:00",
+  "video": "v5_ruleta_A.mp4",
+  "portada": "portada_v5_ruleta_A.png",
+  "texto": "Cada euro en la ruleta pierde de media 2,7 céntimos.\n\nRuleta europea: 37 casillas, del 1 al 36 y el 0.\n\n· Apuestas 1 € a un número: si aciertas te pagan 35; si no, pierdes el euro.\n· Esperanza: 35·(1/37) − 1·(36/37) = −1/37. Pierdes de media 2,7 céntimos por euro.\n· A rojo: 18 casillas ganan y 19 pierden. Vuelve a salir −1/37.\n· El pago está calculado como si hubiera 36 casillas, y hay 37.\n· Ley de los grandes números: al repetir, tu media se acerca a la esperanza. En 1000 apuestas de 1 €, la pérdida esperada son 27 €.\n\nReto: la ruleta americana tiene además el doble cero. ¿Cuánto pierdes por euro?\n\nEsperanza y ley de los grandes números. Guárdalo para tu repaso.\n\n#probabilidad #matematicas #leydelosgrandesnumeros #oposiciones #mates",
+  "prueba": true,
+  "reel": "v5_ruleta",
+  "version": "A"
+}

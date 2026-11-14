@@ -1,0 +1,9 @@
+{
+  "publicar_a": "2026-11-19T10:00:00+01:00",
+  "video": "v2_baraja_C.mp4",
+  "portada": "portada_v2_baraja.png",
+  "texto": "Barajar perfecto no desordena. Ordena.\n\nMezcla perfecta: partes la baraja de 52 cartas en dos mitades iguales y las intercalas una a una, dejando arriba la que estaba arriba.\n\n· Numera las posiciones de 0 a 51. La primera y la última no se mueven.\n· Cualquier otra carta pasa de la posición k a la 2k, módulo 51.\n· Tras n mezclas has multiplicado por 2ⁿ. La baraja vuelve a su sitio cuando 2ⁿ ≡ 1 (mód 51).\n· 2⁸ = 256 = 5·51 + 1. Ocho mezclas, y ninguna potencia anterior lo cumple: el orden de 2 módulo 51 es 8.\n\nReto: ¿cuántas mezclas perfectas hacen falta con 10 cartas?\n\nCongruencias, tema 4 de oposiciones. Guárdalo para tu repaso.\n\n#matematicas #congruencias #oposiciones #teoriadenumeros #profedemates",
+  "prueba": true,
+  "reel": "v2_baraja",
+  "version": "C"
+}
