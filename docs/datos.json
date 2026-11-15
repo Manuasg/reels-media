@@ -1,5 +1,5 @@
 {
-  "actualizado": "2026-11-13",
+  "actualizado": "2026-11-15",
   "pendientes": [
     {
       "codigo": "I7",
@@ -36,6 +36,22 @@
     {
       "codigo": "E6",
       "titulo": "Dual del simplex"
+    },
+    {
+      "codigo": "J1.1",
+      "titulo": "¿Qué es el meta? Un equilibrio de Nash"
+    },
+    {
+      "codigo": "J1.2",
+      "titulo": "La paradoja del parche"
+    },
+    {
+      "codigo": "J1.3",
+      "titulo": "Por qué hay tiers"
+    },
+    {
+      "codigo": "J1.4",
+      "titulo": "Por qué el meta nunca se queda quieto"
     }
   ],
   "bloqueadas": [
