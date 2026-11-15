@@ -52,6 +52,10 @@
     {
       "codigo": "J1.4",
       "titulo": "Por qué el meta nunca se queda quieto"
+    },
+    {
+      "codigo": "J1.5",
+      "titulo": "El counterpick: cuánto vale elegir el último"
     }
   ],
   "bloqueadas": [
