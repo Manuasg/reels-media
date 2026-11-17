@@ -42,6 +42,19 @@
         "ig_reels_avg_watch_time": 13124,
         "ig_reels_video_view_total_time": 17258284,
         "reels_skip_rate": 55.6
+      },
+      {
+        "hora": "2026-11-17T16:21+00:00",
+        "views": 1487,
+        "reach": 1292,
+        "saved": 11,
+        "shares": 4,
+        "likes": 45,
+        "comments": 0,
+        "total_interactions": 63,
+        "ig_reels_avg_watch_time": 13114,
+        "ig_reels_video_view_total_time": 17259025,
+        "reels_skip_rate": 55.6
       }
     ]
   },
@@ -78,6 +91,19 @@
       },
       {
         "hora": "2026-11-16T16:15+00:00",
+        "views": 181,
+        "reach": 164,
+        "saved": 3,
+        "shares": 1,
+        "likes": 4,
+        "comments": 0,
+        "total_interactions": 9,
+        "ig_reels_avg_watch_time": 8237,
+        "ig_reels_video_view_total_time": 1392057,
+        "reels_skip_rate": 59.8
+      },
+      {
+        "hora": "2026-11-17T16:21+00:00",
         "views": 181,
         "reach": 164,
         "saved": 3,
@@ -134,6 +160,19 @@
         "ig_reels_avg_watch_time": 15963,
         "ig_reels_video_view_total_time": 39876963,
         "reels_skip_rate": 42.8
+      },
+      {
+        "hora": "2026-11-17T16:21+00:00",
+        "views": 3282,
+        "reach": 2681,
+        "saved": 47,
+        "shares": 15,
+        "likes": 97,
+        "comments": 11,
+        "total_interactions": 177,
+        "ig_reels_avg_watch_time": 15983,
+        "ig_reels_video_view_total_time": 43555825,
+        "reels_skip_rate": 43.5
       }
     ]
   }
