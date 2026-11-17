@@ -5,5 +5,6 @@
   "texto": "Tres herramientas de este tema salen en toda la EBAU.\n\nTema 1 de Matemáticas aplicadas a las Ciencias Sociales I: números reales.\n\nLos conjuntos: naturales, enteros, racionales y reales. Cada uno nace cuando una operación se queda corta: restar pide negativos, dividir pide fracciones y medir la diagonal de un cuadrado pide irracionales.\n\nTres herramientas para todo el bachillerato:\n\n1. Intervalos: un trozo de la recta. Con ellos escribirás dominios, dónde crece una función y la región de programación lineal.\n\n2. Potencias y radicales: √x = x^(1/2), el primer paso para derivarla.\n\n3. Logaritmos: bajan la incógnita del exponente. Al 10 %, tu dinero se duplica en 7,3 años, no en 10.\n\nReto: ¿cuánto tarda en duplicarse al 5 %?\n\nTema 1 de Matemáticas CCSS I. Guárdalo para el examen.\n\n#bachillerato #ebau #matematicas #numerosreales #matematicasccss",
   "prueba": true,
   "reel": "s1t1_numeros_reales",
-  "version": "A"
+  "version": "A",
+  "inicio": "2026-11-17T10:02:17.069613+00:00"
 }
