@@ -1,5 +1,5 @@
 {
-  "actualizado": "2026-11-15",
+  "actualizado": "2026-11-18",
   "pendientes": [
     {
       "codigo": "I7",
@@ -56,6 +56,26 @@
     {
       "codigo": "J1.5",
       "titulo": "El counterpick: cuánto vale elegir el último"
+    },
+    {
+      "codigo": "R1.1",
+      "titulo": "Riqueza no es renta"
+    },
+    {
+      "codigo": "R1.2",
+      "titulo": "Te haces más rico sin hacer nada"
+    },
+    {
+      "codigo": "R1.3",
+      "titulo": "Tu sueldo futuro es tu mayor riqueza"
+    },
+    {
+      "codigo": "R1.4",
+      "titulo": "Un euro no vale lo mismo para todos"
+    },
+    {
+      "codigo": "R1.5",
+      "titulo": "¿Qué es la riqueza de un país?"
     }
   ],
   "bloqueadas": [
