@@ -374,10 +374,10 @@ h3{font:600 15px "Barlow Condensed",sans-serif;margin:0 0 6px;color:var(--sub);t
       const avg = sum.map((s, i) => cnt[i] ? s / cnt[i] : 0), mx = Math.max(...avg), order = avg.map((v, i) => [v, i]).sort((a, b) => b[0] - a[0]), top = new Set(order.slice(0, 4).map(x => x[1]));
       box.append(el("h3", null, "Mejores horas: seguidores conectados por hora (Madrid)"));
       const g = el("div", "hours"), hl = el("div", "hl");
-      avg.forEach((v, i) => { const d = el("div", (top.has(i) ? "top" : "") + ([10, 11, 12].includes(i) ? " mine" : "")); d.style.height = (100 * v / mx) + "%"; d.title = `${i}:00 · ${nf.format(Math.round(v))} seguidores conectados`; g.append(d); hl.append(el("span", null, i % 2 ? "" : String(i))); });
+      avg.forEach((v, i) => { const d = el("div", (top.has(i) ? "top" : "") + ([20, 21, 22].includes(i) ? " mine" : "")); d.style.height = (100 * v / mx) + "%"; d.title = `${i}:00 · ${nf.format(Math.round(v))} seguidores conectados`; g.append(d); hl.append(el("span", null, i % 2 ? "" : String(i))); });
       box.append(g, hl);
-      const lg = el("div", "legend"); const l1 = el("span"); const i1 = el("i"); i1.style.background = "var(--jade)"; l1.append(i1, document.createTextNode("las 4 mejores horas")); const l2 = el("span"); const i2 = el("i"); i2.style.outline = "2px solid var(--amber)"; l2.append(i2, document.createTextNode("tus horas actuales (10, 11 y 12)")); lg.append(l1, l2); box.append(lg);
-      const mine = (avg[10] + avg[11] + avg[12]) / 3, best = order.slice(0, 4).map(x => x[1]).sort((a, b) => a - b);
+      const lg = el("div", "legend"); const l1 = el("span"); const i1 = el("i"); i1.style.background = "var(--jade)"; l1.append(i1, document.createTextNode("las 4 mejores horas")); const l2 = el("span"); const i2 = el("i"); i2.style.outline = "2px solid var(--amber)"; l2.append(i2, document.createTextNode("tus horas actuales (20, 21 y 22)")); lg.append(l1, l2); box.append(lg);
+      const mine = (avg[20] + avg[21] + avg[22]) / 3, best = order.slice(0, 4).map(x => x[1]).sort((a, b) => a - b);
       box.append(el("div", "muted", `Media de ${vals.length} días. Pico: ${best.map(x => x + ":00").join(", ")} (unos ${nf.format(Math.round(order[0][0]))} conectados). A tus horas actuales hay unos ${nf.format(Math.round(mine))}, el ${pct(100 * mine / order[0][0], 0)} del pico. Instagram da este dato con unos días de retraso y en hora del Pacífico; aquí está convertido a hora de Madrid.`));
     }
     const d = c.demografia;

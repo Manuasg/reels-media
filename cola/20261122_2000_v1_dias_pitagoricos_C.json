@@ -1,5 +1,5 @@
 {
-  "publicar_a": "2026-11-22T10:00:00+01:00",
+  "publicar_a": "2026-11-22T20:00:00+01:00",
   "video": "v1_dias_pitagoricos_C.mp4",
   "portada": "portada_v1_dias_pitagoricos.png",
   "texto": "No era una fecha cualquiera. Era un triángulo rectángulo.\n\n24/10/26: 10² + 24² = 100 + 576 = 676 = 26². Día, mes y año forman una terna pitagórica.\n\n· En todo el siglo solo pasa 12 veces, y esa fue la última: el mes no pasa de 12 ni el día de 31.\n· El siguiente: 4 de marzo de 2105 (3, 4, 5).\n· La receta, que ya está en Euclides: con dos enteros m > n, los números m² − n², 2mn y m² + n² forman una terna. Con 5 y 1: 24, 10, 26.\n· Con m y n primos entre sí y de distinta paridad salen todas las primitivas; las demás son sus múltiplos.\n\nReto: ¿cuál fue el primer día pitagórico del siglo?\n\nTernas pitagóricas, tema 15 de oposiciones. Guárdalo para tu repaso.\n\n#matematicas #pitagoras #ternaspitagoricas #oposiciones #profedemates",
