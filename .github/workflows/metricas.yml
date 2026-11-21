@@ -1,8 +1,11 @@
 name: Guardar métricas de los reels
 
 on:
+  # Lo lanza cron-job.org 5 veces al día (0:30, 8:30, 12:30, 16:30 y 18:30 en Madrid), fuera de la
+  # franja de publicación (19:00-22:45) para no hacer cola con el publicador.
+  # El cron de GitHub queda como respaldo diario: GitHub lo retrasa varias horas.
   schedule:
-    - cron: "30 6 * * *"     # cada día hacia las 7:30-8:30 en Madrid
+    - cron: "30 6 * * *"
   workflow_dispatch: {}
 
 concurrency:
@@ -46,6 +49,6 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A metricas 2>/dev/null || true
           if ! git diff --cached --quiet; then
-            git commit -m "Métricas del día"
-            git pull --rebase -q && git push -q
+            git commit -m "Métricas $(TZ=Europe/Madrid date +'%d/%m %H:%M')"
+            for i in 1 2 3; do git pull --rebase -q && git push -q && break; sleep 5; done
           fi
