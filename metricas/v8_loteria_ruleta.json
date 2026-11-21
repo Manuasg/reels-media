@@ -1,0 +1,62 @@
+{
+  "A": {
+    "media_id": "18360653542218317",
+    "permalink": "https://www.instagram.com/reel/Df-XE9WGf0q/",
+    "publicado": "2026-11-20T19:03:16+0000",
+    "fotos": [
+      {
+        "hora": "2026-11-21T14:51+00:00",
+        "views": 134,
+        "reach": 118,
+        "saved": 0,
+        "shares": 0,
+        "likes": 0,
+        "comments": 0,
+        "total_interactions": 0,
+        "ig_reels_avg_watch_time": 11301,
+        "ig_reels_video_view_total_time": 1344874,
+        "reels_skip_rate": 56.3
+      }
+    ]
+  },
+  "B": {
+    "media_id": "18130410755478797",
+    "permalink": "https://www.instagram.com/reel/Df-d8kkFaSK/",
+    "publicado": "2026-11-20T20:03:18+0000",
+    "fotos": [
+      {
+        "hora": "2026-11-21T14:51+00:00",
+        "views": 768,
+        "reach": 621,
+        "saved": 2,
+        "shares": 0,
+        "likes": 5,
+        "comments": 1,
+        "total_interactions": 8,
+        "ig_reels_avg_watch_time": 30542,
+        "ig_reels_video_view_total_time": 18905645,
+        "reels_skip_rate": 43.2
+      }
+    ]
+  },
+  "C": {
+    "media_id": "18121209185077564",
+    "permalink": "https://www.instagram.com/reel/Df-kz58nH_t/",
+    "publicado": "2026-11-20T21:03:14+0000",
+    "fotos": [
+      {
+        "hora": "2026-11-21T14:51+00:00",
+        "views": 589,
+        "reach": 515,
+        "saved": 1,
+        "shares": 0,
+        "likes": 4,
+        "comments": 0,
+        "total_interactions": 5,
+        "ig_reels_avg_watch_time": 16745,
+        "ig_reels_video_view_total_time": 8607167,
+        "reels_skip_rate": 44.3
+      }
+    ]
+  }
+}
