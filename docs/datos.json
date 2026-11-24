@@ -6,24 +6,40 @@
       "titulo": "1/(n+1) + … + 1/(2n) → ln 2"
     },
     {
+      "codigo": "I15",
+      "titulo": "Murcia 2025: la suma tiende a uno"
+    },
+    {
       "codigo": "E5",
       "titulo": "La Cobb-Douglas es la CES con ρ → 0"
+    },
+    {
+      "codigo": "I4",
+      "titulo": "Murcia 2021: x·f(x) = ∫f, dos constantes"
     },
     {
       "codigo": "I11",
       "titulo": "Distancia media entre dos puntos al azar: 1/3"
     },
     {
+      "codigo": "I9",
+      "titulo": "Murcia 2006: n derivadas que suman n"
+    },
+    {
       "codigo": "E6",
       "titulo": "Dual del simplex"
     },
     {
-      "codigo": "I10",
-      "titulo": "Cambiar el orden de integración"
-    },
-    {
       "codigo": "I12",
       "titulo": "∫∫ e^{max(x², y²)} = e − 1"
+    },
+    {
+      "codigo": "I8",
+      "titulo": "Murcia 2018: f ≤ x/b"
+    },
+    {
+      "codigo": "I10",
+      "titulo": "Cambiar el orden de integración"
     },
     {
       "codigo": "I7",
@@ -78,27 +94,6 @@
       "titulo": "El counterpick: cuánto vale elegir el último"
     }
   ],
-  "bloqueadas": [
-    {
-      "codigo": "I4",
-      "titulo": "Murcia 2021 P3",
-      "falta": "enunciado exacto"
-    },
-    {
-      "codigo": "I8",
-      "titulo": "Murcia 2018 P3a",
-      "falta": "enunciado exacto"
-    },
-    {
-      "codigo": "I9",
-      "titulo": "Murcia 2006 C1",
-      "falta": "enunciado exacto"
-    },
-    {
-      "codigo": "I15",
-      "titulo": "Murcia 2025 P1",
-      "falta": "enunciado exacto"
-    }
-  ],
+  "bloqueadas": [],
   "token_cron_caduca": "2027-11-08"
 }
