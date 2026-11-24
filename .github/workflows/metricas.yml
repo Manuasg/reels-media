@@ -1,8 +1,8 @@
 name: Guardar métricas de los reels
 
 on:
-  # Lo lanza cron-job.org 5 veces al día (0:30, 8:30, 12:30, 16:30 y 18:30 en Madrid), fuera de la
-  # franja de publicación (19:00-22:45) para no hacer cola con el publicador.
+  # Lo lanza cron-job.org 5 veces al día (0:30, 8:30, 14:30, 18:30 y 22:30 en Madrid), fuera de la
+  # franja de publicación (9:00-12:45) para no hacer cola con el publicador.
   # El cron de GitHub queda como respaldo diario: GitHub lo retrasa varias horas.
   schedule:
     - cron: "30 6 * * *"
