@@ -6,10 +6,6 @@
       "titulo": "1/(n+1) + … + 1/(2n) → ln 2"
     },
     {
-      "codigo": "I15",
-      "titulo": "Murcia 2025: la suma tiende a uno"
-    },
-    {
       "codigo": "E5",
       "titulo": "La Cobb-Douglas es la CES con ρ → 0"
     },
@@ -27,7 +23,7 @@
     },
     {
       "codigo": "E6",
-      "titulo": "Dual del simplex"
+      "titulo": "Dualidad en programación lineal"
     },
     {
       "codigo": "I12",
@@ -55,43 +51,23 @@
     },
     {
       "codigo": "R1.1",
-      "titulo": "Riqueza no es renta"
+      "titulo": "Renta y riqueza: flujo y stock"
     },
     {
       "codigo": "R1.2",
-      "titulo": "Te haces más rico sin hacer nada"
+      "titulo": "El valor de un activo depende del tipo de interés"
     },
     {
       "codigo": "R1.3",
-      "titulo": "Tu sueldo futuro es tu mayor riqueza"
+      "titulo": "Capital humano: valor presente del salario"
     },
     {
       "codigo": "R1.4",
-      "titulo": "Un euro no vale lo mismo para todos"
+      "titulo": "Utilidad marginal decreciente (Bernoulli)"
     },
     {
       "codigo": "R1.5",
-      "titulo": "¿Qué es la riqueza de un país?"
-    },
-    {
-      "codigo": "J1.1",
-      "titulo": "¿Qué es el meta? Un equilibrio de Nash"
-    },
-    {
-      "codigo": "J1.2",
-      "titulo": "La paradoja del parche"
-    },
-    {
-      "codigo": "J1.3",
-      "titulo": "Por qué hay tiers"
-    },
-    {
-      "codigo": "J1.4",
-      "titulo": "Por qué el meta nunca se queda quieto"
-    },
-    {
-      "codigo": "J1.5",
-      "titulo": "El counterpick: cuánto vale elegir el último"
+      "titulo": "Riqueza amplia y ahorro neto ajustado"
     }
   ],
   "bloqueadas": [],
