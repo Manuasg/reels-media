@@ -1,0 +1,9 @@
+{
+  "publicar_a": "2026-11-27T12:00:00+01:00",
+  "video": "i15_suma_sandwich_B.mp4",
+  "portada": "portada_i15_suma_sandwich_B.png",
+  "texto": "¿A qué tiende una suma de términos que tienden a cero?\n\nOposiciones de Matemáticas, Región de Murcia 2025, prueba práctica, P1:\nlím (1/√(n²+1) + 1/√(n²+2) + … + 1/√(n²+n)), n → ∞.\n\n· Cada término tiende a 0, pero hay n.\n· El más pequeño es el último, 1/√(n²+n); el más grande, el primero, 1/√(n²+1).\n· Hay n términos: n/√(n²+n) ≤ S_n ≤ n/√(n²+1).\n· Dividiendo entre n: 1/√(1+1/n) ≤ S_n ≤ 1/√(1+1/n²). Las dos cotas tienden a 1.\n· Por el criterio del sándwich, S_n → 1. Con n = 10, S = 0,974; con n = 100, 0,997.\n\nReto: ¿y si los términos son 1/√(n+k)?\n\nProblema real del práctico de Murcia. Guárdalo para tu repaso.\n\n#oposicionesmatematicas #analisismatematico #criteriodelsandwich #matematicas #profedemates",
+  "prueba": true,
+  "reel": "i15_suma_sandwich",
+  "version": "B"
+}

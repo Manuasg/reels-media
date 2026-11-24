@@ -1,0 +1,9 @@
+{
+  "publicar_a": "2026-11-30T11:00:00+01:00",
+  "video": "j15_counterpick_A.mp4",
+  "portada": "portada_j15_counterpick_A.png",
+  "texto": "Elegir el último vale 20 puntos de probabilidad de victoria.\n\nTeoría de juegos, capítulo 5 de 5: el counterpick.\n\n· Piedra, papel o tijera se elige a la vez; el draft del LoL, por turnos.\n· Si eliges primero, el rival responde con el mazo que te gana: 40 %. Es el maximin, máx_i mín_j p_ij.\n· Si eliges el último, respondes tú: 60 %. Es el minimax, mín_j máx_i p_ij.\n· El hueco de 20 puntos es lo que vale la información.\n· Si elegís a la vez y sorteas tu mazo (1/3 cada uno), ganas 1/3·(50 + 40 + 60) = 50 % contra cualquier mazo.\n· Con estrategias mixtas, maximin = minimax: es el teorema minimax de John von Neumann (1928).\n· Por eso los drafts alternan turnos y tienen baneos: reparten la ventaja de elegir el último.\n\nReto: eliges primero, pero antes puedes banear un mazo. ¿Cuál baneas?\n\nMazos y porcentajes inventados para el ejemplo.\n\n#teoriadejuegos #minimax #matematicas #oposicionesmatematicas #leagueoflegends",
+  "prueba": true,
+  "reel": "j15_counterpick",
+  "version": "A"
+}
