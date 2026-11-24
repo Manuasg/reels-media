@@ -1,61 +1,41 @@
 {
-  "actualizado": "2026-11-18",
+  "actualizado": "2026-11-24",
   "pendientes": [
-    {
-      "codigo": "I7",
-      "titulo": "Acotar ∫₀¹ e^{x²} dx sin primitiva"
-    },
-    {
-      "codigo": "I10",
-      "titulo": "Cambiar el orden de integración"
-    },
-    {
-      "codigo": "I11",
-      "titulo": "Distancia media entre dos puntos al azar: 1/3"
-    },
-    {
-      "codigo": "I12",
-      "titulo": "∫∫ e^{max(x², y²)} = e − 1"
-    },
     {
       "codigo": "I13",
       "titulo": "1/(n+1) + … + 1/(2n) → ln 2"
-    },
-    {
-      "codigo": "I14",
-      "titulo": "Volumen del dónut por Pappus"
-    },
-    {
-      "codigo": "I16",
-      "titulo": "∫₀^∞ x^{5/2} e^{−x} dx = 15√π/8"
     },
     {
       "codigo": "E5",
       "titulo": "La Cobb-Douglas es la CES con ρ → 0"
     },
     {
+      "codigo": "I11",
+      "titulo": "Distancia media entre dos puntos al azar: 1/3"
+    },
+    {
       "codigo": "E6",
       "titulo": "Dual del simplex"
     },
     {
-      "codigo": "J1.1",
-      "titulo": "¿Qué es el meta? Un equilibrio de Nash"
+      "codigo": "I10",
+      "titulo": "Cambiar el orden de integración"
     },
     {
-      "codigo": "J1.2",
-      "titulo": "La paradoja del parche"
+      "codigo": "I12",
+      "titulo": "∫∫ e^{max(x², y²)} = e − 1"
     },
     {
-      "codigo": "J1.3",
-      "titulo": "Por qué hay tiers"
+      "codigo": "I7",
+      "titulo": "Acotar ∫₀¹ e^{x²} dx sin primitiva"
     },
     {
-      "codigo": "J1.4",
-      "titulo": "Por qué el meta nunca se queda quieto"
+      "codigo": "I16",
+      "titulo": "∫₀^∞ x^{5/2} e^{−x} dx = 15√π/8"
     },
     {
-      "codigo": "J1.5",
-      "titulo": "El counterpick: cuánto vale elegir el último"
+      "codigo": "I14",
+      "titulo": "Volumen del dónut por Pappus"
     },
     {
       "codigo": "R1.1",
@@ -76,6 +56,26 @@
     {
       "codigo": "R1.5",
       "titulo": "¿Qué es la riqueza de un país?"
+    },
+    {
+      "codigo": "J1.1",
+      "titulo": "¿Qué es el meta? Un equilibrio de Nash"
+    },
+    {
+      "codigo": "J1.2",
+      "titulo": "La paradoja del parche"
+    },
+    {
+      "codigo": "J1.3",
+      "titulo": "Por qué hay tiers"
+    },
+    {
+      "codigo": "J1.4",
+      "titulo": "Por qué el meta nunca se queda quieto"
+    },
+    {
+      "codigo": "J1.5",
+      "titulo": "El counterpick: cuánto vale elegir el último"
     }
   ],
   "bloqueadas": [
