@@ -5,5 +5,6 @@
   "texto": "¿Por qué tras cada parche todos acaban jugando lo mismo?\n\nTeoría de juegos, capítulo 1 de 5: qué es el meta.\n\n· Un juego de cartas competitivo es un juego de suma cero: lo que gana uno lo pierde el otro.\n· Tres mazos en ciclo: Aggro gana a Combo, Combo a Control y Control a Aggro, todos al 60 %.\n· El meta es una estrategia mixta: el vector x = (x_A, x_C, x_K) con la proporción de cada mazo.\n· Con x = (1/3, 1/3, 1/3), Aggro gana 1/3·50 + 1/3·60 + 1/3·40 = 50 %. Y lo mismo los otros dos.\n· Nadie mejora cambiando de mazo él solo: eso es, por definición, un equilibrio de Nash.\n\nReto: un parche hace que Aggro gane a Combo el 70 %. ¿Qué mazo se juega más ahora? La respuesta, en el capítulo 2.\n\nMazos y porcentajes inventados para el ejemplo.\n\n#teoriadejuegos #matematicas #juegosdecartas #probabilidad #profedemates",
   "prueba": true,
   "reel": "j11_meta_nash",
-  "version": "B"
+  "version": "B",
+  "inicio": "2026-11-25T10:02:17.500226+00:00"
 }
