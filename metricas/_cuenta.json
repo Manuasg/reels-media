@@ -1,6 +1,6 @@
 {
  "demografia": {
-  "hora": "2026-11-26T21:33+00:00",
+  "hora": "2026-11-26T23:32+00:00",
   "age": {
    "13-17": 9,
    "18-24": 325,
@@ -281,20 +281,20 @@
   },
   {
    "fecha": "2026-11-26",
-   "hora": "2026-11-26T21:33+00:00",
+   "hora": "2026-11-26T23:32+00:00",
    "seguidores": 2921,
    "seguidos": 342,
    "publicaciones": 109,
-   "reach": 2158,
-   "views": 2919,
-   "profile_views": 27,
-   "accounts_engaged": 66,
-   "total_interactions": 89
+   "reach": 2288,
+   "views": 3156,
+   "profile_views": 31,
+   "accounts_engaged": 70,
+   "total_interactions": 94
   }
  ],
  "errores": {},
  "online": {
-  "hora": "2026-11-26T21:33+00:00",
+  "hora": "2026-11-26T23:32+00:00",
   "valores": [
    {
     "end_time": "2026-10-29T07:00:00+0000",
