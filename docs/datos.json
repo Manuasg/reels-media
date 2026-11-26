@@ -2,10 +2,6 @@
   "actualizado": "2026-11-24",
   "pendientes": [
     {
-      "codigo": "I13",
-      "titulo": "1/(n+1) + … + 1/(2n) → ln 2"
-    },
-    {
       "codigo": "E5",
       "titulo": "La Cobb-Douglas es la CES con ρ → 0"
     },
@@ -68,6 +64,10 @@
     {
       "codigo": "R1.5",
       "titulo": "Riqueza amplia y ahorro neto ajustado"
+    },
+    {
+      "codigo": "W1.2–W1.5",
+      "titulo": "Plaza en n pasos (uno cada dos semanas: 11 dic, 25 dic, 8 ene, 22 ene)"
     }
   ],
   "bloqueadas": [],

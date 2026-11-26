@@ -1,0 +1,9 @@
+{
+  "publicar_a": "2026-11-27T10:00:00+01:00",
+  "video": "w11_plaza_C.mp4",
+  "portada": "portada_w11_plaza_C.png",
+  "texto": "La parte A no se prepara con temario. Se prepara con problemas.\n\nHe construido una web gratuita para preparar la parte A (problemas) de la oposición de Matemáticas de Secundaria de la Región de Murcia: Plaza en n pasos.\n\nEnlace: https://manuasg.github.io/plaza-en-n-pasos/ (también en el enlace del perfil)\n\n· 174 problemas resueltos, entre ellos los oficiales de Murcia de 2002, 2004, 2006, 2021 y 2025.\n· 5 bloques ponderados según lo que ha caído en Murcia: Análisis 26 %, Álgebra 21 %, Geometría 21 %, Probabilidad 21 %, Números 10 %.\n· Cada problema lleva su probabilidad de salir, calculada con lo que ha caído en Murcia y en otras 20 convocatorias. No es una predicción: es una prioridad.\n· Si un problema no sale: pistas graduadas, la teoría con sus hipótesis y el botón «Más fácil», que te baja un escalón para volver a subir después.\n\nEs una versión de prueba: si ves una errata, hay un botón para avisar. Tus datos se guardan solo en tu navegador. Web no oficial: no es de la Consejería ni de los tribunales.\n\nReto: haz la prueba de nivel y comenta en qué bloque sales más bajo.\n\n#oposicionesmatematicas #oposicionesmurcia #opositores #matematicas #oposicionessecundaria",
+  "prueba": true,
+  "reel": "w11_plaza",
+  "version": "C"
+}
