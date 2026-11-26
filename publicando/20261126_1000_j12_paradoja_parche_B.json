@@ -5,5 +5,6 @@
   "texto": "¿Qué pasa en el meta cuando mejoran tu mazo?\n\nTeoría de juegos, capítulo 2 de 5: la paradoja del parche.\n\n· Antes: Aggro, Control y Combo en ciclo al 60 %. Equilibrio: 1/3 de cada uno.\n· Parche: Aggro gana a Combo el 70 %.\n· Matriz de pagos: m_ij = P(i gana a j) − 1/2. Es antisimétrica (Mᵀ = −M).\n· En el equilibrio, todo mazo que se juega tiene ventaja cero contra el meta: Mx = 0.\n· Fila de Combo: x_C = 2x_A. Fila de Control: x_A = x_K. Con x_A + x_C + x_K = 1 sale x* = (1/4, 1/2, 1/4).\n· Aggro baja de 1/3 a 1/4. Sube Control, su depredador.\n\nRegla general: si a, b y c son las ventajas de Aggro sobre Combo, de Combo sobre Control y de Control sobre Aggro, x* = (b, a, c)/(a + b + c). Lo que se juega de cada mazo depende del cruce en el que no participa.\n\nReto: ¿y si el parche hace que Control gane a Aggro el 70 %?\n\nMazos y porcentajes inventados para el ejemplo.\n\n#teoriadejuegos #matrices #matematicas #juegosdecartas #profedemates",
   "prueba": true,
   "reel": "j12_paradoja_parche",
-  "version": "B"
+  "version": "B",
+  "inicio": "2026-11-26T09:02:19.855916+00:00"
 }
