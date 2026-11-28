@@ -5,5 +5,6 @@
   "texto": "Un mazo que gana el 48 % no lo juega nadie.\n\nTeoría de juegos, capítulo 3 de 5: por qué hay tiers.\n\n· Meta en equilibrio: Aggro, Control y Combo, 1/3 cada uno.\n· Llega Midrange: gana a Aggro el 55 % y pierde con Control y con Combo (45 %).\n· Contra ese meta gana (55 + 45 + 45)/3 = 48,3 %: ventaja negativa.\n· En un equilibrio de Nash, un mazo con ventaja negativa tiene proporción 0: queda fuera del soporte. Eso es un tier bajo.\n· Tier 1 = soporte del equilibrio: mazos con proporción positiva y todos con ventaja exactamente 0.\n· Si un parche sube a Midrange al 65 % contra Aggro, su media pasa a 51,7 % y entra.\n· Con decenas de mazos, hallar el equilibrio (x ≥ 0, Σx = 1, Mx ≤ 0) es un problema de programación lineal: el del símplex.\n\nReto: ¿qué porcentaje mínimo contra Aggro necesita Midrange para entrar?\n\nMazos y porcentajes inventados para el ejemplo.\n\n#teoriadejuegos #programacionlineal #matematicas #oposicionesmatematicas #hearthstone",
   "prueba": true,
   "reel": "j13_tiers",
-  "version": "A"
+  "version": "A",
+  "inicio": "2026-11-28T09:02:15.367719+00:00"
 }
